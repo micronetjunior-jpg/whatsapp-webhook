@@ -8,12 +8,10 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
 print("starting")
 
-@app.get("/webhook")
-async def verify(request: Request):
-    print("get")
-    q = request.query_params
-    if q.get("hub.mode") == "subscribe" and q.get("hub.verify_token") == VERIFY_TOKEN:
-        return PlainTextResponse(q.get("hub.challenge"))
+@app.route('/webhook', methods=['GET'])
+def webhook2():
+    if request.method == 'GET':
+        return "Webhook activo ✅"
 
 @app.post("/webhook")
 async def webhook(request: Request):
