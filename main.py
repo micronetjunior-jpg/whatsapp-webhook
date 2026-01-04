@@ -9,7 +9,7 @@ VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 print("starting")
 
 @app.route('/webhook', methods=['GET'])
-def webhook2():
+def webhook2(request: Request):
     if request.method == 'GET':
         return "Webhook activo ✅"
 
