@@ -12,10 +12,6 @@ WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
 
-print(RAILWAY_TOKEN)
-
-print("repo cloud")
-
 """
 @app.get("/webhook", response_class=PlainTextResponse)
 async def verify_webhook(
@@ -34,23 +30,7 @@ async def verify_webhook(
         print("suscrito")
         return mensaje
     return {"error":"token invalido"}
-"""
     
-# -------------------------------
-# VERIFICACIÓN DEL WEBHOOK (GET)
-# -------------------------------
-@app.get("/webhook")
-async def verify_webhook(request: Request):
-    params = request.query_params
-
-    mode = params.get("hub.mode")
-    token = params.get("hub.verify_token")
-    challenge = params.get("hub.challenge")
-
-    if mode == "subscribe" and token == VERIFY_TOKEN:
-        return Response(content=challenge, status_code=200)
-
-    return Response(status_code=403)
 
 @app.post("/webhook")
 async def webhook(request: Request):
@@ -90,3 +70,95 @@ def send_message(to, text):
 
     r = requests.post(url, json=payload, headers=headers)
     print("📤 RESPUESTA META:", r.status_code, r.text)
+
+    
+"""
+    
+# -------------------------------
+# VERIFICACIÓN DEL WEBHOOK (GET)
+# -------------------------------
+@app.get("/webhook")
+async def verify_webhook(request: Request):
+    params = request.query_params
+
+    mode = params.get("hub.mode")
+    token = params.get("hub.verify_token")
+    challenge = params.get("hub.challenge")
+
+    if mode == "subscribe" and token == VERIFY_TOKEN:
+        return Response(content=challenge, status_code=200)
+
+    return Response(status_code=403)
+
+# -------------------------------
+# RECEPCIÓN DE MENSAJES (POST)
+# -------------------------------
+@app.post("/webhook")
+async def receive_message(request: Request):
+    data = await request.json()
+
+    print("📩 Evento recibido de Meta:")
+    print(data)
+
+    try:
+        entry = data["entry"][0]
+        change = entry["changes"][0]
+        value = change["value"]
+
+        messages = value.get("messages")
+        if not messages:
+            return Response(status_code=200)
+
+        message = messages[0]
+        from_number = message["from"]
+        text = message["text"]["body"]
+
+        print(f"📨 Mensaje de {from_number}: {text}")
+
+        # Procesamiento
+        reply_text = procesar_mensaje(text)
+
+        # Responder
+        enviar_mensaje(from_number, reply_text)
+
+    except Exception as e:
+        print("❌ Error procesando mensaje:", e)
+
+    # Meta necesita 200 SIEMPRE
+    return Response(status_code=200)
+
+
+# -------------------------------
+# LÓGICA DEL MENSAJE
+# -------------------------------
+def procesar_mensaje(texto: str) -> str:
+    texto = texto.lower()
+
+    if "hola" in texto:
+        return "Hola 👋 ¿Cómo puedo ayudarte?"
+    if "info" in texto:
+        return "Te puedo contar sobre nuestros programas educativos 🤖📚"
+
+    return "Mensaje recibido ✅"
+
+
+# -------------------------------
+# ENVÍO DE RESPUESTAS A WHATSAPP
+# -------------------------------
+def enviar_mensaje(to: str, message: str):
+    url = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/messages"
+
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": to,
+        "text": {"body": message}
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    print("📤 Respuesta enviada:", response.status_code, response.text)
