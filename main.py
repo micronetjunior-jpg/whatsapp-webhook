@@ -22,7 +22,7 @@ async def verify_webhook(
     verify_token: str = None
 ):
     print(VERIFY_TOKEN)
-    print(hub_verify_token)
+    print(verify_token)
     if hub_mode == "subscribe" and verify_token == VERIFY_TOKEN:
         return int(hub_challenge)
     return {"error":"token invalido"}
