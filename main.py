@@ -4,12 +4,22 @@ import requests
 
 app = FastAPI()
 
+VERIFY_TOKEN = "mi_token"
 META_TOKEN = os.getenv("META_TOKEN")
 RAILWAY_TOKEN = os.getenv("RAILWAY_TOKEN")
-VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
+
+@app.get("/webhook")
+async def verify_webhook(
+    hub_mode: str = None,
+    hub_challenge: str = None,
+    hub_verify_token: str = None
+):
+    if hub_mode == "subscribe" and hub_verify_token == VERIFY_TOKEN:
+        return int(hub_challenge)
+    return {"error":"token invalido"}
 
 @app.post("/webhook")
 async def webhook(request: Request):
