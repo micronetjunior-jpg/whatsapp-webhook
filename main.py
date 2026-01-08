@@ -19,11 +19,11 @@ print("repo cloud")
 async def verify_webhook(
     hub_mode: str = None,
     hub_challenge: str = None,
-    verify_token: str = None
+    hub_verify_token: str = None
 ):
     print(VERIFY_TOKEN)
-    print(verify_token)
-    if hub_mode == "subscribe" and verify_token == VERIFY_TOKEN:
+    print(hub_verify_token)
+    if hub_mode == "subscribe" and hub_verify_token == VERIFY_TOKEN:
         return int(hub_challenge)
     return {"error":"token invalido"}
 
