@@ -66,7 +66,7 @@ def send_message(to, text):
 
     payload = {
         "messaging_product": "whatsapp",
-        "to": 3176429931,
+        "to": "573176429931",
         "text": {"body": "respuesta"}
     }
 
