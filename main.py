@@ -24,10 +24,11 @@ async def verify_webhook(
 ):
     print("get")
     print("modo:",mode)
+    print(challenge)
     print("token real",VERIFY_TOKEN)
     print("token ingresado",verify_token)
     if mode == "subscribe" and verify_token == VERIFY_TOKEN:
-        return int(challenge)
+        return challenge
     return {"error":"token invalido"}
 
 @app.post("/webhook")
