@@ -53,7 +53,7 @@ async def webhook(request: Request):
 
 def send_message(to, text):
     print("eco")
-    url = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/messages"
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
 
     headers = {
         "Authorization": f"Bearer {WHATSAPP_TOKEN}",
@@ -62,8 +62,8 @@ def send_message(to, text):
 
     payload = {
         "messaging_product": "whatsapp",
-        "to": to,
-        "text": {"body": text}
+        "to": 3176429931,
+        "text": {"body": "respuesta"}
     }
 
     r = requests.post(url, json=payload, headers=headers)
