@@ -19,8 +19,8 @@ print("repo cloud")
 @app.get("/webhook", response_class=PlainTextResponse)
 async def verify_webhook(
     mode: str = Query(..., alias="hub.mode"),
-    hub_challenge: str = None,
-    hub_verify_token: str = None
+    challenge: str = Query(..., alias="hub.challenge"),
+    verify_token: str = Query(..., alias="hub.verify_token")
 ):
     print("modo:",mode)
     print("token real",VERIFY_TOKEN)
