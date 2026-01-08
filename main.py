@@ -21,7 +21,7 @@ async def verify_webhook(
     mode: str = Query(..., alias="hub.mode"),
     challenge: str = Query(..., alias="hub.challenge"),
     verify_token: str = Query(..., alias="hub.verify_token"),
-    mensaje: str = Query(..., alias="mensaje")
+    mensaje: str = Query(..., alias="hub.mensaje")
 ):
     print("mensaje:",mensaje)
     print("get")
