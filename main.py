@@ -26,7 +26,7 @@ async def verify_webhook(
     print("mensaje:",mensaje)
     print("get")
     print("modo:",mode)
-    print(challenge)
+    print("challenge:",challenge)
     print("token real",VERIFY_TOKEN)
     print("token ingresado",verify_token)
     if mode == "subscribe" and verify_token == VERIFY_TOKEN:
