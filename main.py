@@ -16,6 +16,7 @@ print(RAILWAY_TOKEN)
 
 print("repo cloud")
 
+"""
 @app.get("/webhook", response_class=PlainTextResponse)
 async def verify_webhook(
     mode: str = Query(..., alias="hub.mode"),
@@ -33,6 +34,23 @@ async def verify_webhook(
         print("suscrito")
         return mensaje
     return {"error":"token invalido"}
+"""
+    
+# -------------------------------
+# VERIFICACIÓN DEL WEBHOOK (GET)
+# -------------------------------
+@app.get("/webhook")
+async def verify_webhook(request: Request):
+    params = request.query_params
+
+    mode = params.get("hub.mode")
+    token = params.get("hub.verify_token")
+    challenge = params.get("hub.challenge")
+
+    if mode == "subscribe" and token == VERIFY_TOKEN:
+        return Response(content=challenge, status_code=200)
+
+    return Response(status_code=403)
 
 @app.post("/webhook")
 async def webhook(request: Request):
