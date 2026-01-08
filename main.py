@@ -11,6 +11,8 @@ WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
 
+print("repo cloud")
+
 @app.get("/webhook")
 async def verify_webhook(
     hub_mode: str = None,
