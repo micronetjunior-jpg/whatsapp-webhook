@@ -22,6 +22,7 @@ async def verify_webhook(
     challenge: str = Query(..., alias="hub.challenge"),
     verify_token: str = Query(..., alias="hub.verify_token")
 ):
+    print("get")
     print("modo:",mode)
     print("token real",VERIFY_TOKEN)
     print("token ingresado",verify_token)
@@ -31,6 +32,7 @@ async def verify_webhook(
 
 @app.post("/webhook")
 async def webhook(request: Request):
+    print("post")
     data = await request.json()
     print("📩 ENTRANTE:", data)
 
@@ -50,6 +52,7 @@ async def webhook(request: Request):
 
 
 def send_message(to, text):
+    print("eco")
     url = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/messages"
 
     headers = {
