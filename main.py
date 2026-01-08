@@ -4,12 +4,14 @@ import requests
 
 app = FastAPI()
 
-VERIFY_TOKEN = "mi_token"
+VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 META_TOKEN = os.getenv("META_TOKEN")
 RAILWAY_TOKEN = os.getenv("RAILWAY_TOKEN")
 WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
+
+print(RAILWAY_TOKEN)
 
 print("repo cloud")
 
