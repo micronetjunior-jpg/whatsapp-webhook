@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Query
+from fastapi.responses import PlainTextResponse
 import os
 import requests
 
@@ -15,14 +16,15 @@ print(RAILWAY_TOKEN)
 
 print("repo cloud")
 
-@app.get("/webhook")
+@app.get("/webhook", response_class=PlainTextResponse)
 async def verify_webhook(
-    hub_mode: str = None,
+    mode: str = Query(..., alias="hub.mode"),
     hub_challenge: str = None,
     hub_verify_token: str = None
 ):
-    print(VERIFY_TOKEN)
-    print(hub_verify_token)
+    print("modo:",mode)
+    print("token real",VERIFY_TOKEN)
+    print("token ingresado",hub_verify_token)
     if hub_mode == "subscribe" and hub_verify_token == VERIFY_TOKEN:
         return int(hub_challenge)
     return {"error":"token invalido"}
