@@ -146,7 +146,7 @@ def procesar_mensaje(texto: str) -> str:
 # ENVÍO DE RESPUESTAS A WHATSAPP
 # -------------------------------
 def enviar_mensaje(to: str, message: str):
-    url = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/messages"
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
 
     headers = {
         "Authorization": f"Bearer {WHATSAPP_TOKEN}",
