@@ -4,6 +4,8 @@ import os
 import requests
 import OpenAI
 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
 app = FastAPI()
 
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
