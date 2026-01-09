@@ -119,7 +119,8 @@ async def receive_message(request: Request):
         reply_text = procesar_mensaje(text)
 
         # Responder
-        enviar_mensaje(from_number, reply_text)
+        print("Se procede a remitir respuesta a",from_text)
+        enviar_mensaje(from_number,reply_text)
 
     except Exception as e:
         print("❌ Error procesando mensaje:", e)
@@ -147,17 +148,23 @@ def procesar_mensaje(texto: str) -> str:
 # -------------------------------
 def enviar_mensaje(to: str, message: str):
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
+    
+    print(url)
 
     headers = {
-        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
-        "Content-Type": "application/json"
+        "Authorization":f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type":"application/json"
     }
+    
+    print(headers)
 
     payload = {
-        "messaging_product": "whatsapp",
-        "to": to,
-        "text": {"body": message}
+        "messaging_product":"whatsapp",
+        "to":to,
+        "text":{"body":message}
     }
+    
+    print(payload)
 
     response = requests.post(url, headers=headers, json=payload)
 
