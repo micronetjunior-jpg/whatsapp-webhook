@@ -85,7 +85,7 @@ def procesar_mensaje(texto: str) -> str:
     # Detectar si es una duda o pregunta
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda"]
     if any(palabra in texto_lower for palabra in palabras_duda):
-        return procesarIA(texto)  # Solo procesa IA si es una duda
+        return procesarIA(texto) # Solo procesa IA si es una duda
 
     # Si no es saludo ni duda, pedimos que escriba la pregunta completa
     return "Por favor, escribe tu duda o pregunta completa para poder ayudarte."
@@ -102,7 +102,8 @@ def procesarIA(solicitud):
       prompt=solicitud,
       max_tokens=1000
     )
-    return(response.choices[0].text.strip())
+    respuesta=response.choices[0].text.strip()
+    return respuesta
 
 
 def enviar_mensaje(to: str, message: str):
