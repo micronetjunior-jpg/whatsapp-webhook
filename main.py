@@ -94,6 +94,16 @@ def procesar_mensaje(texto: str) -> str:
 # PROCESAMIETO CON IA
 # -------------------------------
 
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+def procesarIA(solicitud):
+    response = openai.chat.completions.create(
+        model="gpt-3.5-turbo",  # o "gpt-4" si quieres
+        messages=[{"role": "user", "content": solicitud}],
+        max_tokens=1000
+    )
+    return response.choices[0].message["content"].strip()
+
 def procesarIA(solicitud):
     openai.api_key = OPENAI_API_KEY
     
