@@ -96,25 +96,26 @@ def procesar_mensaje(texto: str) -> str:
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-def procesarIA(solicitud):
-    response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",  # o "gpt-4" si quieres
-        messages=[{"role": "user", "content": solicitud}],
-        max_tokens=1000
-    )
-    return response.choices[0].message["content"].strip()
+import openai
+import os
 
-def procesarIA(solicitud):
-    openai.api_key = OPENAI_API_KEY
-    
-    response = openai.Completion.create(
-      engine="gpt-3.5-turbo:",
-      prompt=solicitud,
-      max_tokens=1000
-    )
-    respuesta=response.choices[0].text.strip()
-    return respuesta
+# Asegúrate de tener la variable de entorno OPENAI_API_KEY configurada
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
+def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
+    """
+    Procesa un texto usando la API moderna de OpenAI ChatCompletion.
+    """
+    try:
+        response = openai.chat.completions.create(
+            model=modelo,
+            messages=[{"role": "user", "content": solicitud}],
+            max_tokens=1000,
+            temperature=0.7
+        )
+        return response.choices[0].message["content"].strip()
+    except Exception as e:
+        return f"Error procesando la solicitud: {e}"
 
 def enviar_mensaje(to: str, message: str):
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
