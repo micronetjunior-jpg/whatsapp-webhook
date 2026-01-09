@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request, Query, Response
 from fastapi.responses import PlainTextResponse
+import openai
 import os
 import requests
-import OpenAI
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
@@ -15,68 +15,7 @@ WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
 
-"""
-@app.get("/webhook", response_class=PlainTextResponse)
-async def verify_webhook(
-    mode: str = Query(..., alias="hub.mode"),
-    challenge: str = Query(..., alias="hub.challenge"),
-    verify_token: str = Query(..., alias="hub.verify_token"),
-    mensaje: str = Query(..., alias="hub.mensaje")
-):
-    print("mensaje:",mensaje)
-    print("get")
-    print("modo:",mode)
-    print("challenge:",challenge)
-    print("token real",VERIFY_TOKEN)
-    print("token ingresado",verify_token)
-    if mode == "subscribe" and verify_token == VERIFY_TOKEN:
-        print("suscrito")
-        return mensaje
-    return {"error":"token invalido"}
-    
 
-@app.post("/webhook")
-async def webhook(request: Request):
-    print("post")
-    data = await request.json()
-    print("📩 ENTRANTE:", data)
-
-    try:
-        message = data["entry"][0]["changes"][0]["value"]["messages"][0]
-        from_number = message["from"]
-        text = message["text"]["body"]
-
-        print(f"Mensaje de {from_number}: {text}")
-
-        send_message(from_number, "Hola 👋")
-
-    except Exception as e:
-        print("No es un mensaje de texto:", e)
-
-    return {"ok": True}
-
-
-def send_message(to, text):
-    print("eco")
-    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
-
-    headers = {
-        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
-        "Content-Type": "application/json"
-    }
-
-    payload = {
-        "messaging_product": "whatsapp",
-        "to": "573176429931",
-        "text": {"body": "respuesta"}
-    }
-
-    r = requests.post(url, json=payload, headers=headers)
-    print("📤 RESPUESTA META:", r.status_code, r.text)
-
-    
-"""
-    
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
 # -------------------------------
@@ -143,12 +82,23 @@ def procesar_mensaje(texto: str) -> str:
     if "info" in texto:
         return "Te puedo contar sobre nuestros programas educativos 🤖📚"
 
-    return "Mensaje recibido ✅"
-
+    return procesarIA(text)
 
 # -------------------------------
-# ENVÍO DE RESPUESTAS A WHATSAPP
+# PROCESAMIETO CON IA
 # -------------------------------
+
+def procesarIA(solicitud):
+    openai.api_key = OPENAI_API_KEY
+    
+    response = openai.Completion.create(
+      engine="text-davinci-003",
+      prompt=solicitud,
+      max_tokens=100
+    )
+    return(response.choices[0].text.strip())
+
+
 def enviar_mensaje(to: str, message: str):
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
     
