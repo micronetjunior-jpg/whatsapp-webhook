@@ -42,9 +42,13 @@ async def receive_message(request: Request):
 
     try:
         
+        print("data":data)
         entry = data["entry"][0]
-        change = entry["changes"][0]
-        value = change["value"]
+        print("entry":entre)
+        changes = entry["changes"][0]
+        print("changes":changes)
+        value = changes["value"]
+        print("value":value)
         
 
         # 📨 MENSAJE DEL USUARIO
