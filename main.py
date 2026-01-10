@@ -49,7 +49,7 @@ async def receive_message(request: Request):
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
-            messages = value["messages"]
+            messages = value["messages"
 
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
