@@ -63,7 +63,7 @@ async def receive_message(request: Request):
         # Procesamiento
         reply_text = procesar_mensaje(messages)
 
-        from_number=int(reply_text[0]["from"])
+        from_number=reply_text[0]["from"]
         text=reply_text[0]["text"]["body"]
         
         print(f"📨 Mensaje de {from_number}: {text}")
@@ -82,7 +82,7 @@ async def receive_message(request: Request):
 # -------------------------------
 # LÓGICA DEL MENSAJE
 # -------------------------------
-def procesar_mensaje(texto: str) -> str:
+def procesar_mensaje(texto) -> str:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     texto_lower = texto[0]["text"]["body"].lower()
 
