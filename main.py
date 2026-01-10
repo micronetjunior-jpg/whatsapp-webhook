@@ -40,7 +40,8 @@ async def receive_message(request: Request):
 
     print("📩 Evento recibido de Meta:")
     print(data)
-    print(data["entry"][0])
+    print(data["entry"][0]["changes"][0]["value"])
+    print("menaje".data["entry"][0]["changes"][0]["value"])
 
     try:
         entry = data["entry"][0]
