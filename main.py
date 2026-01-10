@@ -50,6 +50,7 @@ async def receive_message(request: Request):
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
             messages = value["messages"]
+            print("procesar":messages)
 
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
@@ -60,14 +61,14 @@ async def receive_message(request: Request):
             print("Evento no reconocido")
 
         # Procesamiento
-        reply_text = procesar_mensaje(text)
-        from_number="573176429931"
-        print(reply_text)
-        print(f"📨 Mensaje de {from_number}: {text}")
+        #reply_text = procesar_mensaje(text)
+        #from_number="573176429931"
+        #print(reply_text)
+        #print(f"📨 Mensaje de {from_number}: {text}")
 
         # Responder
         print("Se procede a remitir respuesta a",from_number)
-        enviar_mensaje(from_number,reply_text)
+        #enviar_mensaje(from_number,reply_text)
 
     except Exception as e:
         print("❌ Error procesando mensaje:", e)
