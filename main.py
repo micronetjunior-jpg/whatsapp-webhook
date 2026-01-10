@@ -84,10 +84,10 @@ async def receive_message(request: Request):
 def procesar_mensaje(texto: list) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     
-    texto_lower = texto[0]["text"]["body"].lower()#para dict
-    #texto_lower = texto.get("text", {}).get("body").lower()
+    #texto_lower = texto[0]["text"]["body"].lower()#para dict
+    texto_lower = texto.get("text", {}).get("body").lower()
     
-    print(texto_lower)
+    #print(texto_lower)
     
     # Detectar saludos
     if any(palabra in texto_lower for palabra in saludo):
