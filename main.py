@@ -49,7 +49,7 @@ async def receive_message(request: Request):
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
-            messages = value["messages"
+            messages = value["messages"]
 
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
@@ -64,6 +64,7 @@ async def receive_message(request: Request):
         # Procesamiento
         reply_text = procesar_mensaje(text)
         print(reply_text)
+        
 
         # Responder
         print("Se procede a remitir respuesta a",from_number)
