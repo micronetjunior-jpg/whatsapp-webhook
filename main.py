@@ -44,7 +44,7 @@ async def receive_message(request: Request):
         
         print("data":data)
         entry = data["entry"][0]
-        print("entry":entre)
+        print("entry":entry)
         changes = entry["changes"][0]
         print("changes":changes)
         value = changes["value"]
