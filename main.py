@@ -62,7 +62,7 @@ async def receive_message(request: Request):
 
         # Procesamiento
         reply_text = procesar_mensaje(text)
-        text = reply_text["text"]["body"]
+        text = reply_text["text"]
         
         print(text)
         
