@@ -41,15 +41,10 @@ async def receive_message(request: Request):
     print("📩 Evento recibido de Meta:")
 
     try:
-        
-        print("data",data)
+    
         entry = data["entry"][0]
-        print("entry",entry)
         changes = entry["changes"][0]
-        print("changes",changes)
         value = changes["value"]
-        print("value",value)
-        
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
@@ -60,13 +55,11 @@ async def receive_message(request: Request):
         elif "statuses" in value:
             statuses = value["statuses"]
             print("STATUS:", statuses)
-        
         else:
             print("Evento no reconocido")
 
-        
         # Procesamiento
-        #reply_text = procesar_mensaje(messages)
+        reply_text = procesar_mensaje(messages)
         #print(reply_text)
 
         from_number=messages["from"]
@@ -93,7 +86,9 @@ def procesar_mensaje(texto: list) -> list:
     
     texto_lower = texto[0]["text"]["body"].lower()#para dict
     #texto_lower = texto.get("text", {}).get("body").lower()
-
+    
+    print(texto_lower)
+    
     # Detectar saludos
     if any(palabra in texto_lower for palabra in saludo):
         return "Hola 👋 ¿Cómo puedo ayudarte?"
