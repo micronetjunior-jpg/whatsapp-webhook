@@ -49,7 +49,7 @@ async def receive_message(request: Request):
 
         messages = value.get("messages")
     
-        print(messages)
+        print("MENSAJE:",messages)
     
         if not messages:
             return Response(status_code=200)
