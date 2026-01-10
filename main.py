@@ -39,14 +39,13 @@ async def receive_message(request: Request):
     data = await request.json()
 
     print("📩 Evento recibido de Meta:")
-    print(data)
-    print(data["entry"][0]["changes"][0]["value"]["messages"])
-    print("menaje",data["entry"][0]["changes"][0]["value"])
 
     try:
         entry = data["entry"][0]
         change = entry["changes"][0]
         value = change["value"]
+        
+        print(value)
 
         messages = value.get("messages")
     
