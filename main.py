@@ -64,8 +64,10 @@ async def receive_message(request: Request):
         reply_text = procesar_mensaje(messages)
 
         from_number="573176429931"#temp
+        text="respuesta"#temp
         #from_number=reply_text["from"]
         print(from_number)
+        print(text)
         print(f"📨 Mensaje de {from_number}: {text}")
 
         # Responder
