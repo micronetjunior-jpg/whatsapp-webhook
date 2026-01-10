@@ -87,7 +87,7 @@ async def receive_message(request: Request):
 # -------------------------------
 def procesar_mensaje(texto: str) -> str:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
-    texto_lower = texto["text"]["body"].lower()
+    texto_lower = texto[0]["text"]["body"].lower()
 
     # Detectar saludos
     if any(palabra in texto_lower for palabra in saludo):
