@@ -60,7 +60,8 @@ async def receive_message(request: Request):
         
         else:
             print("Evento no reconocido")
-        
+        from_number = text
+        print("from:",from_mumber)
         print(f"📨 Mensaje de {from_number}: {text}")
 
         # Procesamiento
