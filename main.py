@@ -41,24 +41,26 @@ async def receive_message(request: Request):
     print("📩 Evento recibido de Meta:")
 
     try:
+        
         entry = data["entry"][0]
         change = entry["changes"][0]
         value = change["value"]
-        
-        
+
+        print("VALUE:", value)
+
+        # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
-            text = value["messages"][0]["text"]["body"]
-            respuesta = procesar_mensaje(messages)
+            messages = value["messages"]
+            print("MENSAJE:", messages)
         
-        print("messages:",respuesta)
-    
-        if not messages:
-            return Response(status_code=200)
-
-        message = messages[0]
-        from_number = message["from"]
-        text = message["text"]["body"]
-
+        # 📬 STATUS (delivered, read, etc.)
+        elif "statuses" in value:
+            statuses = value["statuses"]
+            print("STATUS:", statuses)
+        
+        else:
+            print("Evento no reconocido")
+        
         print(f"📨 Mensaje de {from_number}: {text}")
 
         # Procesamiento
