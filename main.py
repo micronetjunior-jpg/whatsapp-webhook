@@ -45,11 +45,12 @@ async def receive_message(request: Request):
         change = entry["changes"][0]
         value = change["value"]
         
-        print(value)
-
-        messages = value.get("messages")
-    
-        print("MENSAJE:",messages)
+        
+        if "messages" in value:
+            messages = value["messages"][0]["text"]["body"]
+            respuesta = procesar_mensaje(texto)
+        
+        print("messages:",messages)
     
         if not messages:
             return Response(status_code=200)
