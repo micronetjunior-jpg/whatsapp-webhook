@@ -45,14 +45,17 @@ async def receive_message(request: Request):
         entry = data["entry"][0]
         change = entry["changes"][0]
         value = change["value"]
-
-        print("VALUE:", value)
         
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
             messages = value["messages"]
-            print("MENSAJE:", messages)
+            
+            from_number=value["from"]
+            text_body=value["text"]
+            
+            print("from:", from_number)
+            print("text body",text_body)
         
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
