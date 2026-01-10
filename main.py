@@ -58,13 +58,12 @@ async def receive_message(request: Request):
         
         else:
             print("Evento no reconocido")
-        
-        print(f"📨 Mensaje de {from_number}: {text}")
 
         # Procesamiento
         reply_text = procesar_mensaje(text)
+        from_number="573176429931"
         print(reply_text)
-        
+        print(f"📨 Mensaje de {from_number}: {text}")
 
         # Responder
         print("Se procede a remitir respuesta a",from_number)
