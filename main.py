@@ -12,7 +12,7 @@ RAILWAY_TOKEN = os.getenv("RAILWAY_TOKEN")
 WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
-openai.api_key = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 # -------------------------------
@@ -108,10 +108,8 @@ def procesar_mensaje(texto: list) -> list:
 # PROCESAMIETO CON IA
 # -------------------------------
 
-
-
-
-
+openai.api_key = OPENAI_API_KEY
+print(OPENAI_API_KEY)
 
 def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
     """
@@ -126,7 +124,7 @@ def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
             max_tokens=1000,
             temperature=0.7
         )
-        print(response)
+        print("response",response)
         return response.choices[0].message["content"].strip()
     except Exception as e:
         return f"Error procesando la solicitud: {e}"
