@@ -50,7 +50,7 @@ async def receive_message(request: Request):
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
             messages = value["messages"]
-            print("procesar":messages)
+            print("procesar",messages)
 
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
