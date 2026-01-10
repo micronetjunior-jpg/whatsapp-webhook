@@ -45,6 +45,7 @@ async def receive_message(request: Request):
         entry = data["entry"][0]
         changes = entry["changes"][0]
         value = changes["value"]
+        messages = None
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
@@ -59,6 +60,7 @@ async def receive_message(request: Request):
             print("Evento no reconocido")
 
         # Procesamiento
+        
         reply_text = procesar_mensaje(messages)
         #print(reply_text)
 
@@ -109,13 +111,13 @@ def procesar_mensaje(texto: list) -> list:
 
 
 
-# Asegúrate de tener la variable de entorno OPENAI_API_KEY configurada
-openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
     """
     Procesa un texto usando la API moderna de OpenAI ChatCompletion.
     """
+    print(solicitud)
     try:
         response = openai.chat.completions.create(
             model=modelo,
