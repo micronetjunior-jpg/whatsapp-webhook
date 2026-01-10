@@ -69,7 +69,7 @@ async def receive_message(request: Request):
 
         # Responder
         print("Se procede a remitir respuesta a",from_number)
-        #enviar_mensaje(from_number,reply_text)
+        enviar_mensaje(from,reply_text)
 
     except Exception as e:
         print("❌ Error procesando mensaje:", e)
