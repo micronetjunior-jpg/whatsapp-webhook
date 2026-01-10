@@ -53,7 +53,7 @@ async def receive_message(request: Request):
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
-            messages = value["messages"][0]
+            messages = value["messages"]
             print("payload",messages)
 
         # 📬 STATUS (delivered, read, etc.)
@@ -66,11 +66,11 @@ async def receive_message(request: Request):
 
         
         # Procesamiento
-        reply_text = procesar_mensaje(messages)
-        print(reply_text)
+        #reply_text = procesar_mensaje(messages)
+        #print(reply_text)
 
-        from_number=reply_text[0]["from"]
-        text=reply_text[0]["text"]["body"]
+        from_number=messages["from"]
+        text=messages["text"]["body"]
         
         print(f"📨 Mensaje de {from_number}: {text}")
 
