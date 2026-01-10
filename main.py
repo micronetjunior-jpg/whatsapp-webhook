@@ -82,7 +82,7 @@ async def receive_message(request: Request):
 # -------------------------------
 # LÓGICA DEL MENSAJE
 # -------------------------------
-def procesar_mensaje(str: texto) -> str:
+def procesar_mensaje(texto) -> str:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     
     #texto_lower = texto[0]["text"]["body"].lower()
