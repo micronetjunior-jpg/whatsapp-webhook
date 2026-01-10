@@ -47,10 +47,10 @@ async def receive_message(request: Request):
         
         
         if "messages" in value:
-            messages = value["messages"][0]["text"]["body"]
-            respuesta = procesar_mensaje(texto)
+            text = value["messages"][0]["text"]["body"]
+            respuesta = procesar_mensaje(messages)
         
-        print("messages:",messages)
+        print("messages:",respuesta)
     
         if not messages:
             return Response(status_code=200)
