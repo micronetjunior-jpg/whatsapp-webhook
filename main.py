@@ -63,16 +63,14 @@ async def receive_message(request: Request):
         # Procesamiento
         reply_text = procesar_mensaje(messages)
 
-        from_number="573176429931"#temp
-        text="respuesta"#temp
-        #from_number=reply_text["from"]
-        print(from_number)
-        print(text)
+        from_number=reply_text[0]["from"]#"573176429931"#temp
+        text=reply_text[0]["text"]["body"]
+        
         print(f"📨 Mensaje de {from_number}: {text}")
 
         # Responder
         print("Se procede a remitir respuesta a",from_number)
-        #enviar_mensaje(from_number,reply_text)
+        enviar_mensaje(from_number,reply_text)
 
     except Exception as e:
         print("❌ Error procesando mensaje:", e)
