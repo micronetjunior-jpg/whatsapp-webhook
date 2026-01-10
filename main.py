@@ -96,7 +96,8 @@ def procesar_mensaje(texto: list) -> list:
     # Detectar si es una duda o pregunta
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda"]
     if any(palabra in texto_lower for palabra in palabras_duda):
-        return procesarIA(texto_lower) # Solo procesa IA si es una duda
+        print(texto_lower)
+        #return procesarIA(texto_lower) # Solo procesa IA si es una duda
 
     # Si no es saludo ni duda, pedimos que escriba la pregunta completa
     return "Por favor, escribe tu duda o pregunta completa para poder ayudarte."
