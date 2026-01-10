@@ -4,8 +4,6 @@ import openai
 import os
 import requests
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
 app = FastAPI()
 
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
@@ -14,6 +12,7 @@ RAILWAY_TOKEN = os.getenv("RAILWAY_TOKEN")
 WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 # -------------------------------
@@ -48,6 +47,9 @@ async def receive_message(request: Request):
         value = change["value"]
 
         messages = value.get("messages")
+    
+        print(messages)
+    
         if not messages:
             return Response(status_code=200)
 
@@ -94,10 +96,8 @@ def procesar_mensaje(texto: str) -> str:
 # PROCESAMIETO CON IA
 # -------------------------------
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
-import openai
-import os
+
 
 # Asegúrate de tener la variable de entorno OPENAI_API_KEY configurada
 openai.api_key = os.getenv("OPENAI_API_KEY")
