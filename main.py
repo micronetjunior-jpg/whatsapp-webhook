@@ -47,6 +47,7 @@ async def receive_message(request: Request):
         value = change["value"]
 
         print("VALUE:", value)
+        
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
@@ -60,7 +61,7 @@ async def receive_message(request: Request):
         
         else:
             print("Evento no reconocido")
-        from_number = "573176429931"
+        
         print("from:",from_mumber)
         
         print(f"📨 Mensaje de {from_number}: {text}")
