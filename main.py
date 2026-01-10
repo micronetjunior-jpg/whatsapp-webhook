@@ -61,8 +61,8 @@ async def receive_message(request: Request):
             print("Evento no reconocido")
 
         # Procesamiento
-        reply_text = procesar_mensaje(text)
-        text = reply_text["text"]
+        reply_text = procesar_mensaje(messages)
+        #text = reply_text["text"]
         
         print(text)
         
