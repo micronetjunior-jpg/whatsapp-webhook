@@ -114,11 +114,11 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
             )
     else:
         # Detectar saludos
-        if any(palabra in texto_lower for palabra in saludo):
+        if any(palabra in mensaje for palabra in saludo):
             print("saludo")
             enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
         # Detectar si es una duda o pregunta
-        elif any(palabra in texto_lower for palabra in palabras_duda):
+        elif any(palabra in mensaje for palabra in palabras_duda):
             print("procesar IA")
             respuestaIA = procesarIA(mensaje)
     
