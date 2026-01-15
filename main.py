@@ -45,7 +45,6 @@ async def receive_message(request: Request):
         entry = data["entry"][0]
         changes = entry["changes"][0]
         value = changes["value"]
-        messages = None
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
@@ -124,8 +123,9 @@ def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
             max_tokens=1000,
             temperature=0.7
         )
-        print("response",response)
-        return response.choices[0].message["content"].strip()
+        respuesta = response.choices[0].message["content"]
+        print("respuesta:",respuesta)
+        return response.choices[0].message["content"]
     except Exception as e:
         return f"Error procesando la solicitud: {e}"
 
