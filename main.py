@@ -93,7 +93,7 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
     mensaje = texto.get("text", {}).get("body").lower()
     
-    verificar_pregunta = esPregunta(mensaje)
+    verificar_pregunta = esPregunta(mensaje).lower()
     print(verificar_pregunta)
     
     estado = obtener_estado(telefono)
