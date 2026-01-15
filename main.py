@@ -12,7 +12,7 @@ import json
 from redis_client import r
 r.set("test", "ok")
 
-app = FastAPI()
+app = FastAPI() 
 
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 META_TOKEN = os.getenv("META_TOKEN")
