@@ -90,7 +90,7 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?"]
     
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
-    texto_lower = texto.get("text", {}).get("body").lower()
+    mensaje = texto.get("text", {}).get("body").lower()
     
     estado = obtener_estado(telefono)
 
@@ -120,7 +120,7 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
         # Detectar si es una duda o pregunta
         elif any(palabra in texto_lower for palabra in palabras_duda):
             print("procesar IA")
-            respuestaIA = procesarIA(texto_lower)
+            respuestaIA = procesarIA(mensaje)
     
             print("Se procede a remitir respuesta a",telefono)
             enviar_mensaje(telefono,respuestaIA)
