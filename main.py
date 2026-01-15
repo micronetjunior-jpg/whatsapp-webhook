@@ -49,7 +49,7 @@ async def receive_message(request: Request):
     data = await request.json()
 
     print("📩 Evento recibido de Meta:")
-
+    print(r.ping())
     try:
     
         entry = data["entry"][0]
