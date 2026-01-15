@@ -236,7 +236,7 @@ def enviar_pdf_whatsapp(media_id: str, to: str):
     response = requests.post(url, headers=headers, json=payload)
     response.raise_for_status()
     
-def guardar_estado(telefono, estado, data=None, ttl=600):
+def guardar_estado(telefono, estado, data=None, ttl=300):
     payload = {
         "estado": estado,
         "data": data
