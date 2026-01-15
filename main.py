@@ -50,27 +50,22 @@ async def receive_message(request: Request):
         if "messages" in value:
             messages = value["messages"][0]
             print("payload",messages)
-
+            # Procesamiento
+            reply_text = procesar_mensaje(messages)
+            #print(reply_text)
+            from_number=messages["from"]
+            text=messages["text"]["body"]
+            print(f"📨 Mensaje de {from_number}: {text}")
+            # Responder
+            print("Se procede a remitir respuesta a",from_number)
+            enviar_mensaje(from_number,reply_text)
+        
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
             statuses = value["statuses"]
             print("STATUS:", statuses)
         else:
             print("Evento no reconocido")
-
-        # Procesamiento
-        
-        reply_text = procesar_mensaje(messages)
-        #print(reply_text)
-
-        from_number=messages["from"]
-        text=messages["text"]["body"]
-        
-        print(f"📨 Mensaje de {from_number}: {text}")
-
-        # Responder
-        print("Se procede a remitir respuesta a",from_number)
-        enviar_mensaje(from_number,reply_text)
 
     except Exception as e:
         print("Try de metodo post ❌ Error procesando mensaje:", e)
