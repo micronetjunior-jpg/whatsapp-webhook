@@ -127,23 +127,17 @@ def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
 
 def enviar_mensaje(to: str, message: str):
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
-    
-    print(url)
 
     headers = {
         "Authorization":f"Bearer {WHATSAPP_TOKEN}",
         "Content-Type":"application/json"
     }
-    
-    print(headers)
 
     payload = {
         "messaging_product":"whatsapp",
         "to":to,
         "text":{"body":message}
     }
-    
-    print(payload)
 
     response = requests.post(url, headers=headers, json=payload)
 
