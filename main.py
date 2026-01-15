@@ -122,6 +122,7 @@ def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
             temperature=0.7
         )
         respuesta = response.choices[0].message.content
+        generarPDF(respuesta)
         print("respuesta:",respuesta)
         return respuesta
     except Exception as e:
@@ -163,3 +164,4 @@ def generar_pdf(texto: str, ruta_pdf: str):
     contenido.append(Paragraph(texto, styles["Normal"]))
 
     doc.build(contenido)
+    print("PDF generado")
