@@ -123,6 +123,10 @@ def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
             max_tokens=1000,
             temperature=0.7
         )
+        print("1",response)
+        print("2",response.choices[0])
+        print("3",response.choices[0].message)
+        
         respuesta = response.choices[0].message.content
         print("respuesta:",respuesta)
         return respuesta
