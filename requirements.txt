@@ -4,3 +4,5 @@ httpx
 requests
 openai
 reportlab
+redis
+json
