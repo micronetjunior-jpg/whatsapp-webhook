@@ -110,12 +110,11 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
     elif any(palabra in texto_lower for palabra in palabras_duda):
         print("procesar IA")
         respuestaIA = procesarIA(texto_lower)
-        texto = procesarIA(pregunta)
 
         guardar_estado(
             telefono,
             "ESPERANDO_CONFIRMACION_PDF",
-            {"texto": texto}
+            {"texto": respuestaIA}
         )
         
         enviar_mensaje(
