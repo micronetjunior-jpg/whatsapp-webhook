@@ -88,7 +88,7 @@ async def receive_message(request: Request):
 def procesar_mensaje(texto: list,telefono: str) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?","ayudame","ayúdame"]
-    si_no = ["si","sí"]
+    si_no = ["si","sí","si.",sí."]
     
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
     mensaje = texto.get("text", {}).get("body").lower()
