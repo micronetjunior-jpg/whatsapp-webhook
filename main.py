@@ -118,7 +118,7 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
             {"texto": texto}
         )
         
-        enviar_texto_whatsapp(
+        enviar_mensaje(
             telefono,
             "¿Deseas recibir esta información en PDF? Responde SI o NO"
         )
