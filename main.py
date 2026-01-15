@@ -88,6 +88,7 @@ async def receive_message(request: Request):
 def procesar_mensaje(texto: list,telefono: str) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?","ayudame","ayúdame"]
+    si_no = ["si","sí"]
     
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
     mensaje = texto.get("text", {}).get("body").lower()
@@ -116,34 +117,36 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
                 "Por favor responde SI o NO"
             )
     else:
+        if any(palabra in mensaje for palabra in si_no):
+            procesarPregunta(mensaje,telefono)
         # Detectar saludos
         if any(palabra in mensaje for palabra in saludo):
             print("saludo")
             enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
         # Detectar si es una duda o pregunta
         elif any(palabra in mensaje for palabra in palabras_duda):
-            print("procesar IA")
-            respuestaIA = procesarIA(mensaje)
-    
-            print("Se procede a remitir respuesta a",telefono)
-            enviar_mensaje(telefono,respuestaIA)
-    
-            guardar_estado(
-                telefono,
-                "ESPERANDO_CONFIRMACION_PDF",
-                {"texto": respuestaIA}
-            )
-            
-            enviar_mensaje(
-                telefono,
-                "¿Deseas recibir esta información en PDF? Responde SI o NO"
-            )
-    
-            return respuestaIA # Solo procesa IA si es una duda
+            procesarPregunta(mensaje,telefono)
         else:
         # Si no es saludo ni duda, pedimos que escriba la pregunta completa
             enviar_mensaje(telefono, "Por favor, escribe tu duda o pregunta completa para poder ayudarte.")
 
+def procesarPregunta(mensaje: str, telefono: str):
+    print("procesar IA")
+    respuestaIA = procesarIA(mensaje)
+    
+    print("Se procede a remitir respuesta a",telefono)
+    enviar_mensaje(telefono,respuestaIA)
+    
+    guardar_estado(
+        telefono,
+        "ESPERANDO_CONFIRMACION_PDF",
+        {"texto": respuestaIA}
+    )
+            
+    enviar_mensaje(
+        telefono,
+        "¿Deseas recibir esta información en PDF? Responde SI o NO"
+    )
 # -------------------------------
 # PROCESAMIETO CON IA
 # -------------------------------
