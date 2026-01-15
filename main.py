@@ -110,7 +110,7 @@ def procesar_mensaje(texto: list) -> list:
 openai.api_key = OPENAI_API_KEY
 print(OPENAI_API_KEY)
 
-def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
+def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
     """
     Procesa un texto usando la API moderna de OpenAI ChatCompletion.
     """
@@ -123,9 +123,9 @@ def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
             max_tokens=1000,
             temperature=0.7
         )
-        respuesta = response.choices[0].message["content"]
+        respuesta = response.choices[0].content
         print("respuesta:",respuesta)
-        return response.choices[0].message["content"]
+        return respuesta
     except Exception as e:
         print("error en try de OpenAI")
         return f"Error procesando la solicitud: {e}"
