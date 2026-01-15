@@ -47,11 +47,8 @@ async def verify_webhook(request: Request):
 @app.post("/webhook")
 async def receive_message(request: Request):
     data = await request.json()
-
     print("📩 Evento recibido de Meta:")
-    print(r.ping())
     try:
-    
         entry = data["entry"][0]
         changes = entry["changes"][0]
         value = changes["value"]
@@ -61,14 +58,14 @@ async def receive_message(request: Request):
             messages = value["messages"][0]
             print("payload",messages)
             
-            from_number=messages["from"]
+            telefono=messages["from"]
             text=messages["text"]["body"]
             
             # Procesamiento
-            reply_text = procesar_mensaje(messages,from_number)
+            reply_text = procesar_mensaje(messages,telefono)
             #print(reply_text)
             
-            print(f"📨 Mensaje de {from_number}: {text}")
+            print(f"📨 Mensaje de {telefono}: {text}")
             # Responder
             
         # 📬 STATUS (delivered, read, etc.)
