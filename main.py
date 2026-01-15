@@ -21,9 +21,9 @@ WABA_ID = os.getenv("WABA_ID")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 r = redis.Redis(
-    host=REDIS_HOST,
-    port=REDIS_PORT,
-    password=REDIS_PASSWORD,
+    host=REDISHOST,
+    port=REDISPORT,
+    password=REDISPASSWORD,
     decode_responses=True
 )
 
