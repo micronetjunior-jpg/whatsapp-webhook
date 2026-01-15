@@ -92,6 +92,9 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
     mensaje = texto.get("text", {}).get("body").lower()
     
+    verificar_pregunta = esPregunta(mensaje)
+    print(verificar_pregunta)
+    
     estado = obtener_estado(telefono)
 
     if estado and estado["estado"] == "ESPERANDO_CONFIRMACION_PDF":
@@ -158,6 +161,21 @@ def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
         response = openai.chat.completions.create(
             model=modelo,
             messages=[{"role": "user", "content": solicitud}],
+            max_tokens=1000,
+            temperature=0.7
+        )
+        respuesta = response.choices[0].message.content
+        print("respuesta:",respuesta)
+        return respuesta
+    except Exception as e:
+        print("error en try de OpenAI")
+        return f"Try openAI, Error procesando la solicitud: {e}"
+
+def esPregunta(pregunta: str, modelo: str = "gpt-4o-mini") -> str:
+    try:
+        response = openai.chat.completions.create(
+            model=modelo,
+            messages=[{"role": "user", "content": "¿El siguiente texto es una pregunta? "+pregunta+" Solo responde Si o No"}],
             max_tokens=1000,
             temperature=0.7
         )
