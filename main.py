@@ -99,8 +99,8 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
         if mensaje.lower() in ["si", "sí", "s"]:
             texto = estado["data"]["texto"]
             pdf = generar_pdf_bytes(texto)
-            enviar_pdf_whatsapp(pdf, telefono)
-    
+            media_id = subir_pdf_whatsapp(pdf)
+            enviar_pdf_whatsapp(media_id, telefono)
             guardar_estado(telefono, "IDLE")
     
         elif mensaje.lower() in ["no", "n"]:
@@ -229,7 +229,7 @@ def enviar_pdf_whatsapp(media_id: str, to: str):
         "type": "document",
         "document": {
             "id": media_id,
-            "filename": "respuesta_ia.pdf"
+            "filename": "respuesta.pdf"
         }
     }
 
