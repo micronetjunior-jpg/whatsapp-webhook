@@ -197,11 +197,11 @@ def generar_pdf_bytes(texto: str) -> bytes:
     buffer.seek(0)
     return buffer.read()
 
-def subir_pdf_whatsapp(pdf_bytes: bytes, token: str, phone_number_id: str) -> str:
-    url = f"https://graph.facebook.com/v24.0/{phone_number_id}/media"
+def subir_pdf_whatsapp(pdf_bytes: bytes) -> str:
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/media"
 
     headers = {
-        "Authorization": f"Bearer {token}"
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}"
     }
 
     files = {
@@ -215,11 +215,11 @@ def subir_pdf_whatsapp(pdf_bytes: bytes, token: str, phone_number_id: str) -> st
 
     return response.json()["id"]
     
-def enviar_pdf_whatsapp(media_id: str, to: str, token: str, phone_number_id: str):
-    url = f"https://graph.facebook.com/v24.0/{phone_number_id}/messages"
+def enviar_pdf_whatsapp(media_id: str, to: str):
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
 
     headers = {
-        "Authorization": f"Bearer {token}",
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
         "Content-Type": "application/json"
     }
 
