@@ -200,7 +200,7 @@ def enviar_mensaje(to: str, message: str):
     payload = {
         "messaging_product":"whatsapp",
         "to":to,
-        "text":{"body":mensaje}
+        "text":{"body":message}
     }
 
     response = requests.post(url, headers=headers, json=payload)
