@@ -104,11 +104,11 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
             guardar_estado(telefono, "IDLE")
     
         elif mensaje.lower() in ["no", "n"]:
-            enviar_texto_whatsapp(telefono, "Perfecto 👍")
+            enviar_mensaje(telefono, "Perfecto 👍")
             guardar_estado(telefono, "IDLE")
     
         else:
-            enviar_texto_whatsapp(
+            enviar_mensaje(
                 telefono,
                 "Por favor responde SI o NO"
             )
