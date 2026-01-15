@@ -99,7 +99,7 @@ def procesar_mensaje(texto: list) -> list:
     elif any(palabra in texto_lower for palabra in palabras_duda):
         print("procesar IA")
         return procesarIA(texto_lower) # Solo procesa IA si es una duda
-    else
+    else:
     # Si no es saludo ni duda, pedimos que escriba la pregunta completa
         return "Por favor, escribe tu duda o pregunta completa para poder ayudarte."
 
