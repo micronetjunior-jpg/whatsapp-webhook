@@ -92,14 +92,12 @@ async def receive_message(request: Request):
 # -------------------------------
 # LÓGICA DEL MENSAJE
 # -------------------------------
-def procesar_mensaje(texto: list) -> list:
+def procesar_mensaje(texto: list,telefono: str) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?"]
     
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
     texto_lower = texto.get("text", {}).get("body").lower()
-    
-    #print(texto_lower)
     
     # Detectar saludos
     if any(palabra in texto_lower for palabra in saludo):
@@ -109,18 +107,19 @@ def procesar_mensaje(texto: list) -> list:
     elif any(palabra in texto_lower for palabra in palabras_duda):
         print("procesar IA")
         respuestaIA = procesarIA(texto_lower)
-        pdf_bytes = generar_pdf_bytes(respuestaIA)
-        media_id = subir_pdf_whatsapp(
-            pdf_bytes,
-            token=WHATSAPP_TOKEN,
-            phone_number_id=PHONE_NUMBER_ID
+        texto = procesarIA(pregunta)
+
+        guardar_estado(
+            telefono,
+            "ESPERANDO_CONFIRMACION_PDF",
+            {"texto": texto}
         )
-        enviar_pdf_whatsapp(
-            media_id,
-            to="573176429931",
-            token=WHATSAPP_TOKEN,
-            phone_number_id=PHONE_NUMBER_ID
+        
+        enviar_texto_whatsapp(
+            telefono,
+            "¿Deseas recibir esta información en PDF? Responde SI o NO"
         )
+
         return respuestaIA # Solo procesa IA si es una duda
     else:
     # Si no es saludo ni duda, pedimos que escriba la pregunta completa
@@ -220,3 +219,14 @@ def enviar_pdf_whatsapp(media_id: str, to: str, token: str, phone_number_id: str
 
     response = requests.post(url, headers=headers, json=payload)
     response.raise_for_status()
+    
+def guardar_estado(telefono, estado, data=None, ttl=600):
+    payload = {
+        "estado": estado,
+        "data": data
+    }
+    r.setex(f"user:{telefono}", ttl, json.dumps(payload))
+    
+def obtener_estado(telefono):
+    data = r.get(f"user:{telefono}")
+    return json.loads(data) if data else None
