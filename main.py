@@ -3,6 +3,9 @@ from fastapi.responses import PlainTextResponse
 import openai
 import os
 import requests
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import LETTER
 
 app = FastAPI()
 
@@ -142,3 +145,21 @@ def enviar_mensaje(to: str, message: str):
     response = requests.post(url, headers=headers, json=payload)
 
     print("📤 Respuesta enviada:", response.status_code, response.text)
+
+def generar_pdf(texto: str, ruta_pdf: str):
+    doc = SimpleDocTemplate(
+        ruta_pdf,
+        pagesize=LETTER,
+        rightMargin=50,
+        leftMargin=50,
+        topMargin=50,
+        bottomMargin=50
+    )
+
+    styles = getSampleStyleSheet()
+    contenido = []
+
+    # Convertir texto plano en párrafo
+    contenido.append(Paragraph(texto, styles["Normal"]))
+
+    doc.build(contenido)
