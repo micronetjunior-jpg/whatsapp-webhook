@@ -7,6 +7,8 @@ from io import BytesIO
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import LETTER
+import redis
+import json
 
 app = FastAPI()
 
@@ -18,6 +20,12 @@ PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
+r = redis.Redis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    password=REDIS_PASSWORD,
+    decode_responses=True
+)
 
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
