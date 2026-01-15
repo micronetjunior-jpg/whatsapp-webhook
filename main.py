@@ -84,6 +84,7 @@ async def receive_message(request: Request):
 # -------------------------------
 def procesar_mensaje(texto: list) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
+    palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda"]
     
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
     texto_lower = texto.get("text", {}).get("body").lower()
@@ -92,16 +93,15 @@ def procesar_mensaje(texto: list) -> list:
     
     # Detectar saludos
     if any(palabra in texto_lower for palabra in saludo):
+        print("saludo")
         return "Hola 👋 ¿Cómo puedo ayudarte?"
-
     # Detectar si es una duda o pregunta
-    palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda"]
-    if any(palabra in texto_lower for palabra in palabras_duda):
-        #return texto_lower
+    elif any(palabra in texto_lower for palabra in palabras_duda):
+        print("procesar IA")
         return procesarIA(texto_lower) # Solo procesa IA si es una duda
-
+    else
     # Si no es saludo ni duda, pedimos que escriba la pregunta completa
-    return "Por favor, escribe tu duda o pregunta completa para poder ayudarte."
+        return "Por favor, escribe tu duda o pregunta completa para poder ayudarte."
 
 # -------------------------------
 # PROCESAMIETO CON IA
@@ -114,19 +114,20 @@ def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
     """
     Procesa un texto usando la API moderna de OpenAI ChatCompletion.
     """
-    print("text",solicitud)
+    print("solicitud:",solicitud)
     try:
-        print("vamo allá")
+        print("vamo al openIA")
         response = openai.chat.completions.create(
             model=modelo,
             messages=[{"role": "user", "content": solicitud}],
             max_tokens=1000,
             temperature=0.7
         )
-        respuesta = response.choices[0].message["content"]
+        respuesta = response.choices[0]
         print("respuesta:",respuesta)
         return response.choices[0].message["content"]
     except Exception as e:
+        print("error en try de OpenAI")
         return f"Error procesando la solicitud: {e}"
 
 def enviar_mensaje(to: str, message: str):
