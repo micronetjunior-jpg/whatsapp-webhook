@@ -65,11 +65,14 @@ async def receive_message(request: Request):
         if "messages" in value:
             messages = value["messages"][0]
             print("payload",messages)
-            # Procesamiento
-            reply_text = procesar_mensaje(messages)
-            #print(reply_text)
+            
             from_number=messages["from"]
             text=messages["text"]["body"]
+            
+            # Procesamiento
+            reply_text = procesar_mensaje(messages,from_number)
+            #print(reply_text)
+            
             print(f"📨 Mensaje de {from_number}: {text}")
             # Responder
             print("Se procede a remitir respuesta a",from_number)
