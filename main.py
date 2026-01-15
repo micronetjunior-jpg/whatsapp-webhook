@@ -79,7 +79,7 @@ async def receive_message(request: Request):
 # -------------------------------
 def procesar_mensaje(texto: list) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
-    palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda"]
+    palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?"]
     
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
     texto_lower = texto.get("text", {}).get("body").lower()
