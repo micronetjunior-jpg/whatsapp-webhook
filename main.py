@@ -120,7 +120,7 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
         if any(palabra in verificar_pregunta for palabra in si_no):
             procesarPregunta(mensaje,telefono)
         # Detectar saludos
-        if any(palabra in mensaje for palabra in saludo):
+        elif any(palabra in mensaje for palabra in saludo):
             print("saludo")
             enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
         # Detectar si es una duda o pregunta
