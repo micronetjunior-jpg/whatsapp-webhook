@@ -70,9 +70,7 @@ async def receive_message(request: Request):
             
             print(f"📨 Mensaje de {from_number}: {text}")
             # Responder
-            print("Se procede a remitir respuesta a",from_number)
-            enviar_mensaje(from_number,reply_text)
-        
+            
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
             statuses = value["statuses"]
@@ -100,11 +98,14 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
     # Detectar saludos
     if any(palabra in texto_lower for palabra in saludo):
         print("saludo")
-        return "Hola 👋 ¿Cómo puedo ayudarte?"
+        enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
     # Detectar si es una duda o pregunta
     elif any(palabra in texto_lower for palabra in palabras_duda):
         print("procesar IA")
         respuestaIA = procesarIA(texto_lower)
+
+        print("Se procede a remitir respuesta a",from_number)
+        enviar_mensaje(telefono,respuestaIA)
 
         guardar_estado(
             telefono,
