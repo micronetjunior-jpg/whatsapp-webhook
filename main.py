@@ -19,6 +19,9 @@ WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
 WABA_ID = os.getenv("WABA_ID")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+REDISHOST = os.getenv("REDISHOST")
+REDISPORT = os.getenv("REDISPORT")
+REDISPASSWORD = os.getenv("REDIS_PASAWORD")
 
 r = redis.Redis(
     host=REDISHOST,
