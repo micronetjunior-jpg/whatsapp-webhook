@@ -101,7 +101,7 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
         print("procesar IA")
         respuestaIA = procesarIA(texto_lower)
 
-        print("Se procede a remitir respuesta a",from_number)
+        print("Se procede a remitir respuesta a",telefono)
         enviar_mensaje(telefono,respuestaIA)
 
         guardar_estado(
