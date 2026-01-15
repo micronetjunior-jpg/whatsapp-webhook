@@ -3,6 +3,7 @@ from fastapi.responses import PlainTextResponse
 import openai
 import os
 import requests
+from io import BytesIO
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import LETTER
@@ -96,7 +97,20 @@ def procesar_mensaje(texto: list) -> list:
     # Detectar si es una duda o pregunta
     elif any(palabra in texto_lower for palabra in palabras_duda):
         print("procesar IA")
-        return procesarIA(texto_lower) # Solo procesa IA si es una duda
+        respuestaIA = procesarIA(texto_lower)
+        pdf_bytes = generar_pdf_bytes(respuestaIA)
+        media_id = subir_pdf_whatsapp(
+            pdf_bytes,
+            token=WHATSAPP_TOKEN,
+            phone_number_id=PHONE_NUMBER_ID
+        )
+        enviar_pdf_whatsapp(
+            media_id,
+            to="573176429931",
+            token=WHATSAPP_TOKEN,
+            phone_number_id=PHONE_NUMBER_ID
+        )
+        return respuestaIA # Solo procesa IA si es una duda
     else:
     # Si no es saludo ni duda, pedimos que escriba la pregunta completa
         return "Por favor, escribe tu duda o pregunta completa para poder ayudarte."
@@ -122,7 +136,6 @@ def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
             temperature=0.7
         )
         respuesta = response.choices[0].message.content
-        generarPDF(respuesta)
         print("respuesta:",respuesta)
         return respuesta
     except Exception as e:
@@ -147,21 +160,52 @@ def enviar_mensaje(to: str, message: str):
 
     print("📤 Respuesta enviada:", response.status_code, response.text)
 
-def generar_pdf(texto: str, ruta_pdf: str):
-    doc = SimpleDocTemplate(
-        ruta_pdf,
-        pagesize=LETTER,
-        rightMargin=50,
-        leftMargin=50,
-        topMargin=50,
-        bottomMargin=50
-    )
-
+def generar_pdf_bytes(texto: str) -> bytes:
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=LETTER)
     styles = getSampleStyleSheet()
-    contenido = []
 
-    # Convertir texto plano en párrafo
-    contenido.append(Paragraph(texto, styles["Normal"]))
+    texto = texto.replace("\n", "<br/>")
+    doc.build([Paragraph(texto, styles["Normal"])])
 
-    doc.build(contenido)
-    print("PDF generado")
+    buffer.seek(0)
+    return buffer.read()
+
+def subir_pdf_whatsapp(pdf_bytes: bytes, token: str, phone_number_id: str) -> str:
+    url = f"https://graph.facebook.com/v24.0/{phone_number_id}/media"
+
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+
+    files = {
+        "file": ("respuesta.pdf", pdf_bytes, "application/pdf"),
+        "type": (None, "application/pdf"),
+        "messaging_product": (None, "whatsapp")
+    }
+
+    response = requests.post(url, headers=headers, files=files)
+    response.raise_for_status()
+
+    return response.json()["id"]
+    
+def enviar_pdf_whatsapp(media_id: str, to: str, token: str, phone_number_id: str):
+    url = f"https://graph.facebook.com/v24.0/{phone_number_id}/messages"
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": to,
+        "type": "document",
+        "document": {
+            "id": media_id,
+            "filename": "respuesta_ia.pdf"
+        }
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+    response.raise_for_status()
