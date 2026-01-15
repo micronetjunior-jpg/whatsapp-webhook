@@ -199,8 +199,9 @@ def enviar_mensaje(to: str, message: str):
 
     payload = {
         "messaging_product":"whatsapp",
+        "type","template",
         "to":to,
-        "text":{"body":message}
+        "template":{"name":"flow1"}
     }
 
     response = requests.post(url, headers=headers, json=payload)
