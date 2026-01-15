@@ -92,33 +92,54 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
     #texto_lower = texto[0]["text"]["body"].lower()#para dict
     texto_lower = texto.get("text", {}).get("body").lower()
     
-    # Detectar saludos
-    if any(palabra in texto_lower for palabra in saludo):
-        print("saludo")
-        enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
-    # Detectar si es una duda o pregunta
-    elif any(palabra in texto_lower for palabra in palabras_duda):
-        print("procesar IA")
-        respuestaIA = procesarIA(texto_lower)
+    estado = obtener_estado(telefono)
 
-        print("Se procede a remitir respuesta a",telefono)
-        enviar_mensaje(telefono,respuestaIA)
-
-        guardar_estado(
-            telefono,
-            "ESPERANDO_CONFIRMACION_PDF",
-            {"texto": respuestaIA}
-        )
-        
-        enviar_mensaje(
-            telefono,
-            "¿Deseas recibir esta información en PDF? Responde SI o NO"
-        )
-
-        return respuestaIA # Solo procesa IA si es una duda
+    if estado and estado["estado"] == "ESPERANDO_CONFIRMACION_PDF":
+    
+        if mensaje.lower() in ["si", "sí", "s"]:
+            texto = estado["data"]["texto"]
+            pdf = generar_pdf_bytes(texto)
+            enviar_pdf_whatsapp(pdf, telefono)
+    
+            guardar_estado(telefono, "IDLE")
+    
+        elif mensaje.lower() in ["no", "n"]:
+            enviar_texto_whatsapp(telefono, "Perfecto 👍")
+            guardar_estado(telefono, "IDLE")
+    
+        else:
+            enviar_texto_whatsapp(
+                telefono,
+                "Por favor responde SI o NO"
+            )
     else:
-    # Si no es saludo ni duda, pedimos que escriba la pregunta completa
-        return "Por favor, escribe tu duda o pregunta completa para poder ayudarte."
+        # Detectar saludos
+        if any(palabra in texto_lower for palabra in saludo):
+            print("saludo")
+            enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
+        # Detectar si es una duda o pregunta
+        elif any(palabra in texto_lower for palabra in palabras_duda):
+            print("procesar IA")
+            respuestaIA = procesarIA(texto_lower)
+    
+            print("Se procede a remitir respuesta a",telefono)
+            enviar_mensaje(telefono,respuestaIA)
+    
+            guardar_estado(
+                telefono,
+                "ESPERANDO_CONFIRMACION_PDF",
+                {"texto": respuestaIA}
+            )
+            
+            enviar_mensaje(
+                telefono,
+                "¿Deseas recibir esta información en PDF? Responde SI o NO"
+            )
+    
+            return respuestaIA # Solo procesa IA si es una duda
+        else:
+        # Si no es saludo ni duda, pedimos que escriba la pregunta completa
+            enviar_mensaje(telefono, "Por favor, escribe tu duda o pregunta completa para poder ayudarte.")
 
 # -------------------------------
 # PROCESAMIETO CON IA
