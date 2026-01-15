@@ -73,7 +73,7 @@ async def receive_message(request: Request):
         enviar_mensaje(from_number,reply_text)
 
     except Exception as e:
-        print("❌ Error procesando mensaje:", e)
+        print("Try de metodo post ❌ Error procesando mensaje:", e)
 
     # Meta necesita 200 SIEMPRE
     return Response(status_code=200)
@@ -132,7 +132,7 @@ def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
         return respuesta
     except Exception as e:
         print("error en try de OpenAI")
-        return f"Error procesando la solicitud: {e}"
+        return f"Try openAI, Error procesando la solicitud: {e}"
 
 def enviar_mensaje(to: str, message: str):
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
