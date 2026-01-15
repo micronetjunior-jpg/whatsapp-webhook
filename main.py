@@ -117,7 +117,7 @@ def procesar_mensaje(texto: list,telefono: str) -> list:
                 "Por favor responde SI o NO"
             )
     else:
-        if any(palabra in mensaje for palabra in si_no):
+        if any(palabra in verificar_pregunta for palabra in si_no):
             procesarPregunta(mensaje,telefono)
         # Detectar saludos
         if any(palabra in mensaje for palabra in saludo):
