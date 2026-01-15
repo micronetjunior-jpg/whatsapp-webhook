@@ -123,7 +123,7 @@ def procesarIA(solicitud: str, modelo: str = "gpt-3.5-turbo") -> str:
             max_tokens=1000,
             temperature=0.7
         )
-        respuesta = response.choices[0]
+        respuesta = response.choices[0].message["content"]
         print("respuesta:",respuesta)
         return response.choices[0].message["content"]
     except Exception as e:
