@@ -9,6 +9,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import LETTER
 import redis
 import json
+from redis_client import r
+r.set("test", "ok")
 
 app = FastAPI()
 
@@ -22,13 +24,6 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 REDISHOST = os.getenv("REDISHOST")
 REDISPORT = os.getenv("REDISPORT")
 REDISPASSWORD = os.getenv("REDIS_PASAWORD")
-
-r = redis.Redis(
-    host=REDISHOST,
-    port=REDISPORT,
-    password=REDISPASSWORD,
-    decode_responses=True
-)
 
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
