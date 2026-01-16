@@ -153,6 +153,7 @@ def procesarPregunta(mensaje: str, telefono: str):
     
     print("Se procede a remitir respuesta a",telefono)
     enviar_mensaje(telefono,respuestaIA)
+    responder_con_audio(telefono,respuestaIA)
     
     guardar_estado(
         telefono,
@@ -367,3 +368,10 @@ def subir_audio_whatsapp(ruta_audio: str) -> str:
 
     response.raise_for_status()
     return response.json()["id"]  # 👈 media_id
+    
+def responder_con_audio(telefono: str, texto: str):
+    ruta_audio = generar_audio_archivo(texto)
+    media_id = subir_audio_whatsapp(ruta_audio)
+    enviar_audio_whatsapp(telefono, media_id)
+    
+    
