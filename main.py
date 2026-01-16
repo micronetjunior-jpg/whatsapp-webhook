@@ -70,8 +70,8 @@ async def receive_message(request: Request):
                 print(f"📨 Mensaje de {telefono}: {text}")
                 # Responder
             elif tipo=="audio":
-                media_id = messages["audio"]["id"]["id"]
-                print(media_id)
+                media_id = messages["audio"]["id"][0]
+                print("media_id",media_id)
                 enviar_mensaje(telefono,"id:"+str(media_id))
                 
             
@@ -290,3 +290,21 @@ def descargar_audio(media_id):
     audio_response.raise_for_status()
 
     return audio_response.content
+    
+from openai import OpenAI
+import tempfile
+
+client = OpenAI()
+
+def transcribir_audio(audio_bytes: bytes) -> str:
+    # Whisper necesita un archivo
+    with tempfile.NamedTemporaryFile(suffix=".ogg") as f:
+        f.write(audio_bytes)
+        f.flush()
+
+        transcription = client.audio.transcriptions.create(
+            file=open(f.name, "rb"),
+            model="gpt-4o-mini-transcribe"
+        )
+
+    return transcription.text
