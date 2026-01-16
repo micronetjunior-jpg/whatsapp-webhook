@@ -74,7 +74,7 @@ async def receive_message(request: Request):
                 texto = transcribir_audio(audio_bytes)
                 print("texto:",texto)
                 # Ahora `texto` es como si el usuario lo hubiera escrito
-                #procesar_mensaje(texto, telefono)
+                procesar_mensaje(telefono=telefono,textAudio=texto)
                 
             
         # 📬 STATUS (delivered, read, etc.)
@@ -94,17 +94,18 @@ async def receive_message(request: Request):
 # -------------------------------
 # LÓGICA DEL MENSAJE
 # -------------------------------
-def procesar_mensaje(texto: list,telefono: str) -> list:
+def procesar_mensaje(texto=None,telefono,textoAudio = None) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?","ayudame","ayúdame"]
     si_no = ["si","sí","si.","sí."]
     
-    #texto_lower = texto[0]["text"]["body"].lower()#para dict
-    mensaje = texto.get("text", {}).get("body").lower()
+    if textoAudio != None:
+        mensaje = textoAudio.lower()
+    else:
+        mensaje = texto.get("text", {}).get("body").lower()
     
     verificar_pregunta = esPregunta(mensaje).lower()
     print(verificar_pregunta)
-    
     estado = obtener_estado(telefono)
 
     if estado and estado["estado"] == "ESPERANDO_CONFIRMACION_PDF":
