@@ -72,7 +72,7 @@ async def receive_message(request: Request):
             elif tipo=="audio":
                 media_id = messages["audio"]
                 print(media_id)
-                enviar_mensaje(telefono,"id:"+str(media_id)
+                enviar_mensaje(telefono,"id:"+str(media_id))
                 
             
         # 📬 STATUS (delivered, read, etc.)
