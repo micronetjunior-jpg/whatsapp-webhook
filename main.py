@@ -245,7 +245,7 @@ def enviar_plantilla(to: str, nombre: str):
         "messaging_product":"whatsapp",
         "to":to,
         "type":"template",
-        "template":{"name":nombre,language:{"code":"en_US"}}
+        "template":{"name":nombre,"language":{"code":"en_US"}}
     }
     response = requests.post(url, headers=headers, json=payload)
     print("📤 Respuesta enviada:", response.status_code, response.text)
