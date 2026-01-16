@@ -393,6 +393,31 @@ def subir_audio_whatsapp(ruta_audio: str) -> str:
     response.raise_for_status()
     return response.json()["id"]  # media_id
     
+def enviar_audio_whatsapp(telefono: str, media_id: str):
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
+
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": telefono,
+        "type": "audio",
+        "audio": {
+            "id": media_id
+        }
+    }
+
+    response = requests.post(
+        url,
+        headers=headers,
+        json=payload
+    )
+
+    response.raise_for_status()
+    
 def responder_con_audio(telefono: str, texto: str):
     ruta_audio = generar_audio_mp3(texto)
     media_id = subir_audio_whatsapp(ruta_audio)
