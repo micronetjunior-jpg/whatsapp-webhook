@@ -521,7 +521,7 @@ def crear_presentacion():
     }
     
     response = requests.post(
-        f"{PRESENTON_URL}/presentations",
+        f"{PRESENTON_URL}/api/v1/ppt/presentation/generate"
         json=payload,
         timeout=60
     )
