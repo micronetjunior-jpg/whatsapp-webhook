@@ -75,7 +75,7 @@ async def receive_message(request: Request):
                 print("texto:",texto)
                 # Ahora `texto` es como si el usuario lo hubiera escrito
                 procesar_mensaje(telefono=telefono,textoAudio=texto)
-            elif tipo=="button"
+            elif tipo=="button":
                 res = messages["button"]["text"]
                 print(res)
                 
