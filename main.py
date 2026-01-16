@@ -164,6 +164,7 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             print("idle")
         elif verificar_pregunta in ["saludo","saludo."]:
             print("es un saludo")
+            crear_presentacion()
             enviar_mensaje(telefono,"Bienvenido 👋 ¿Cómo puedo ayudarte? escribe o mándame una nota de voz")
         elif verificar_pregunta in ["pregunta","pregunta."]:
             print("es una pregunta")
