@@ -139,6 +139,7 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
                 "Por favor responde SI o NO"
             )
     else:
+        guardar_estado(telefono, "IDLE")
         #if any(palabra in verificar_pregunta for palabra in saludo_no):
             #procesarPregunta(mensaje,telefono)
         # Detectar saludos
