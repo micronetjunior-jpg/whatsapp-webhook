@@ -163,7 +163,7 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             guardar_estado(telefono, "IDLE")
             
             presentation_id=crear_presentacion()
-            descargar_pptx(presentation_id)
+            #descargar_pptx(presentation_id)
             #pdf = generar_pdf_bytes(texto)
             #media_id = subir_pdf_whatsapp(pdf)
             #enviar_pdf_whatsapp(media_id, telefono)
@@ -548,8 +548,9 @@ def crear_presentacion():
     print("RESPONSE present:",response)
     response.raise_for_status()
     resultado = response.json()
-    id = resultado["presentation_id"]
     print("RESULTADO present:",resultado)
+    id = resultado["presentation_id"]
+    print("id",id)
     return id
 
 def descargar_pptx(presentation_id: str):
