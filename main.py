@@ -24,7 +24,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 REDISHOST = os.getenv("REDISHOST")
 REDISPORT = os.getenv("REDISPORT")
 REDISPASSWORD = os.getenv("REDIS_PASAWORD")
-
+KOKOROURL = os.getenv("KOKOROURL")
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
 # -------------------------------
@@ -318,3 +318,13 @@ def transcribir_audio(audio_bytes: bytes) -> str:
         )
 
     return transcription.text
+    
+def kokoro_tts(texto: str) -> bytes:
+    response = requests.post(
+        f"{KOKOROURL}/tts",
+        json={"text": texto},
+        timeout=30
+    )
+
+    response.raise_for_status()
+    return response.content
