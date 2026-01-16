@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Request, Query, Response, UploadFile, File
-from fastapi.responses import PlainTextResponse
+from fastapi import FastAPI, Request, Query, Response, UploadFile, File, HTTPException
+from fastapi.responses import PlainTextResponse, FileResponse
 import openai
 import os
 import requests
@@ -45,6 +45,23 @@ async def verify_webhook(request: Request):
         return Response(content=challenge, status_code=200)
 
     return Response(status_code=403)
+    
+EXPORT_DIR = "/app_data/exports"
+# -------------------------------
+# RECEPCIÓN DE MENSAJES (GET)
+# -------------------------------
+@app.get("/presentations/{presentation_id}/download")
+def download_presentation(presentation_id: str):
+    for file in os.listdir(EXPORT_DIR):
+        if presentation_id in file:
+            file_path = os.path.join(EXPORT_DIR, file)
+            return FileResponse(
+                file_path,
+                media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                filename=file
+            )
+
+    raise HTTPException(status_code=404, detail="Presentación no encontrada")
 
 # -------------------------------
 # RECEPCIÓN DE MENSAJES (POST)
