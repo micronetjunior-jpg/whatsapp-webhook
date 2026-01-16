@@ -516,8 +516,7 @@ def obtener_historial(telefono):
 
 def crear_presentacion():
     payload = {
-        "prompt": "Explica la inteligencia artificial en educación",
-        "slides": 6
+        "content": "Explica la inteligencia artificial en educación"
     }
     
     response = requests.post(
@@ -525,7 +524,7 @@ def crear_presentacion():
         json=payload,
         timeout=60
     )
-    
+    print(response)
     response.raise_for_status()
     resultado = response.json()
     print(resultado)
