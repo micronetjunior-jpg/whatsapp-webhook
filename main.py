@@ -515,16 +515,22 @@ def obtener_historial(telefono):
 
 def crear_presentacion():
     payload = {
-        "content": "Explica la inteligencia artificial en educación"
-    }
-    
+        "content": "Explica la inteligencia artificial en educación",
+        "n_slides": 5,
+        "language": "Spanish",
+        "template": "general",
+        "export_as": "pptx"
+        }
+        
     response = requests.post(
         f"{PRESENTON_URL}/api/v1/ppt/presentation/generate",
         json=payload,
         timeout=60
     )
-    print("response present:",response)
+    print("RESPONSE present:",response)
     response.raise_for_status()
     resultado = response.json()
-    print("resultado present:",resultado)
+    id = resultado["presentation_id"]
+    print("RESULTADO present:",resultado)
+    
 
