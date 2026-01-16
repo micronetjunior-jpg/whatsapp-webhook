@@ -73,7 +73,9 @@ async def receive_message(request: Request):
                 guardar_estado("tipo_respuesta","audio")
                 estado = obtener_estado(telefono+"wait")
                 print("estado wait:",estado)
-                if estado != "enviando_audio":
+                if estado and estado["estado"] == "enviando_audio":
+                    print("esperando para enviar audio")
+                else:
                     media_id = messages["audio"]["id"]
                     print("media_id:",media_id)
                     audio_bytes = descargar_audio(media_id)
