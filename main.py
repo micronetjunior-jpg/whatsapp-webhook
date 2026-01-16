@@ -62,17 +62,19 @@ async def receive_message(request: Request):
             print("tipo:",tipo)
             if tipo=="text":
                 text=messages["text"]["body"]
-            
                 # Procesamiento
                 reply_text = procesar_mensaje(messages,telefono)
                 #print(reply_text)
-            
                 print(f"📨 Mensaje de {telefono}: {text}")
                 # Responder
             elif tipo=="audio":
                 media_id = messages["audio"]["id"]
-                print("media_id",media_id)
-                enviar_mensaje(telefono,"id:"+str(media_id))
+                print("media_id:",media_id)
+                audio_bytes = descargar_audio(media_id)
+                texto = transcribir_audio(audio_bytes)
+                print("texto:",texto)
+                # Ahora `texto` es como si el usuario lo hubiera escrito
+                #procesar_mensaje(texto, telefono)
                 
             
         # 📬 STATUS (delivered, read, etc.)
