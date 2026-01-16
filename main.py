@@ -61,6 +61,7 @@ async def receive_message(request: Request):
             tipo=messages["type"]
             print("tipo:",tipo)
             if tipo=="text":
+                guardar_estado("tipo_respuesta","texto")
                 text=messages["text"]["body"]
                 # Procesamiento
                 reply_text = procesar_mensaje(messages,telefono)
@@ -68,6 +69,7 @@ async def receive_message(request: Request):
                 print(f"📨 Mensaje de {telefono}: {text}")
                 # Responder
             elif tipo=="audio":
+                guardar_estado("tipo_respuesta","audio")
                 media_id = messages["audio"]["id"]
                 print("media_id:",media_id)
                 audio_bytes = descargar_audio(media_id)
@@ -76,9 +78,12 @@ async def receive_message(request: Request):
                 # Ahora `texto` es como si el usuario lo hubiera escrito
                 procesar_mensaje(telefono=telefono,textoAudio=texto)
             elif tipo=="button":
+                guardar_estado("tipo_respuesta","boton")
                 res = messages["button"]["text"]
                 reply_text = procesar_mensaje(telefono=telefono,textoRespuesta=res)
                 print(f"📨 Mensaje de {telefono}: {res}")
+            else:
+                guardar_estado("tipo_respuesta","IDLE")
             
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
@@ -105,7 +110,6 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
     
     if textoAudio != None:
         mensaje = textoAudio.lower()
-        guardar_estado("tipo_respuesta","audio")
     elif textoRespuesta != None:
         mensaje = textoRespuesta.lower()
     else:
