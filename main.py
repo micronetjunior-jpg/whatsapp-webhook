@@ -10,6 +10,7 @@ from reportlab.lib.pagesizes import LETTER
 import redis
 import json
 from redis_client import r
+from presenton_client import PresentonClient
 r.set("test", "ok")
 
 app = FastAPI() 
