@@ -160,13 +160,14 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
     
         if mensaje.lower() in ["si", "sí", "s"]:
             texto = estado["data"]["texto"]
+            guardar_estado(telefono, "IDLE")
             
-            crear_presentacion()
-            
+            presentation_id=crear_presentacion()
+            descargar_pptx(presentation_id)
             #pdf = generar_pdf_bytes(texto)
             #media_id = subir_pdf_whatsapp(pdf)
             #enviar_pdf_whatsapp(media_id, telefono)
-            guardar_estado(telefono, "IDLE")
+            
     
         elif mensaje.lower() in ["no", "n"]:
             enviar_mensaje(telefono, "Perfecto 👍")
