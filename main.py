@@ -110,6 +110,7 @@ async def receive_message(request: Request):
 # LÓGICA DEL MENSAJE
 # -------------------------------
 def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=None) -> list:
+    print("procesando mensaje")
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?","ayudame","ayúdame"]
     si_no = ["si","sí","si.","sí."]
