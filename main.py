@@ -169,14 +169,15 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             texto = estado["data"]["texto"]
             guardar_estado(telefono, "IDLE")
             
-            presentation_id=crear_presentacion()
+            payload=generar_presentacion()
+            print("PAYLOAD:",payload)
             #descargar_pptx(presentation_id)
             #pdf = generar_pdf_bytes(texto)
             #media_id = subir_pdf_whatsapp(pdf)
             #enviar_pdf_whatsapp(media_id, telefono)
           
-            edit_link = presenton.edit_url(result["edit_path"])
-            download_link = presenton.download_url(result["presentation_id"])
+            #edit_link = presenton.edit_url(result["edit_path"])
+            #download_link = presenton.download_url(result["presentation_id"])
     
         elif mensaje.lower() in ["no", "n"]:
             enviar_mensaje(telefono, "Perfecto 👍")
@@ -541,11 +542,29 @@ def obtener_historial(telefono):
     
 
 
-    
-    
-    
-    
-    
+presenton = PresentonClient() 
+def generar_presentacion():
+    payload = {
+        "title": "Inteligencia Artificial en Educación",
+        "slides": [
+            {"title": "Introducción", "content": "¿Qué es la IA?"},
+            {"title": "Aplicaciones", "content": "Educación, salud, industria"}
+        ]
+    }
+
+    # 1️⃣ Llamada interna (Railway private network)
+    result = presenton.create_presentation(payload)
+
+    # 2️⃣ Construcción de enlaces (esto es lo que preguntabas)
+    edit_link = presenton.edit_url(result["edit_path"])
+    download_link = presenton.download_url(result["presentation_id"])
+
+    # 3️⃣ Retorno o uso
+    return {
+        "id": result["presentation_id"],
+        "edit_link": edit_link,
+        "download_link": download_link
+    }
     
 
 def crear_presentacion():
