@@ -140,7 +140,6 @@ async def receive_message(request: Request):
     # Meta necesita 200 SIEMPRE
     return Response(status_code=200)
 
-
 # -------------------------------
 # LÓGICA DEL MENSAJE
 # -------------------------------
