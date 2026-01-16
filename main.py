@@ -62,6 +62,7 @@ async def receive_message(request: Request):
             tipo=messages["type"]
             print("tipo:",tipo)
             if tipo=="text":
+                print("procesando respuesta")
                 guardar_estado("tipo_respuesta","texto")
                 text=messages["text"]["body"]
                 # Procesamiento
