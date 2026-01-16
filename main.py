@@ -54,7 +54,7 @@ async def receive_message(request: Request):
         changes = entry["changes"][0]
         value = changes["value"]
         status = value["statuses"]
-        print(status)
+        print("status:",status)
 
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
