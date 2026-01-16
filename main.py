@@ -102,12 +102,10 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None) -> list:
     
     if textoAudio != None:
         mensaje = textoAudio.lower()
-        guardar_estado(
-            "tipo_respuesta",
-            "audio"
-        )
+        guardar_estado("tipo_respuesta","audio")
     else:
         mensaje = texto.get("text", {}).get("body").lower()
+        guardar_estado("tipo_respuesta","texto")
     
     verificar_pregunta = saludo_pregunta(mensaje).lower()
     print("tipo de mensaje:",verificar_pregunta)
