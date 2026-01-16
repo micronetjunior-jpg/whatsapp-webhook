@@ -566,6 +566,7 @@ def obtener_historial(telefono):
 
 presenton = PresentonClient() 
 def generar_presentacion():
+    print("iniciando la generación")
     payload = {
         "title": "Inteligencia Artificial en Educación",
         "slides": [
@@ -573,14 +574,18 @@ def generar_presentacion():
             {"title": "Aplicaciones", "content": "Educación, salud, industria"}
         ]
     }
+    print("PAYLOAD PRESENTON:",payload)
 
     # 1️⃣ Llamada interna (Railway private network)
     result = presenton.create_presentation(payload)
+    print("crear:",result)
 
     # 2️⃣ Construcción de enlaces (esto es lo que preguntabas)
+    print("OBTENER EDIT...")
     edit_link = presenton.edit_url(result["edit_path"])
+    print("OBTENER LINK..")
     download_link = presenton.download_url(result["presentation_id"])
-
+    print("ALISTANDO RETORNO...")
     # 3️⃣ Retorno o uso
     return {
         "id": result["presentation_id"],
