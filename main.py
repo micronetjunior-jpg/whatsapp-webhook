@@ -140,16 +140,10 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             texto = estado["data"]["texto"]
             
             
-            #pdf = generar_pdf_bytes(texto)
-            #media_id = subir_pdf_whatsapp(pdf)
-            #enviar_pdf_whatsapp(media_id, telefono)
+            pdf = generar_pdf_bytes(texto)
+            media_id = subir_pdf_whatsapp(pdf)
+            enviar_pdf_whatsapp(media_id, telefono)
             guardar_estado(telefono, "IDLE")
-            
-            print("generando slides")
-            slides = generar_slides_gamma(texto)
-            print("slides:",slides)
-            ruta_pptx = generar_presentacion_gamma(slides)
-            print("ruta:",ruta_pptx)
     
         elif mensaje.lower() in ["no", "n"]:
             enviar_mensaje(telefono, "Perfecto 👍")
@@ -511,69 +505,6 @@ def obtener_historial(telefono):
     data = r.get(f"chat:{telefono}")
     return json.loads(data) if data else []
 
-
-
-def construir_prompt_gamma(tema: str) -> str:
-    return f"""
-Eres un generador de presentaciones tipo Gamma.
-
-Genera una presentación sencilla y clara.
-Máximo 6 diapositivas.
-
-Formato de salida: JSON puro (sin texto adicional).
-
-Cada diapositiva debe tener:
-- tipo: "titulo" | "contenido" | "cierre"
-- titulo: string
-- bullets: lista de máximo 4 puntos cortos
-
-Tema:
-{tema}
-"""
-
-
-from pptx import Presentation
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_PATH = os.path.join(BASE_DIR, "..", "templates", "gamma_like_template.pptx")
-prs = Presentation(TEMPLATE_PATH)
-
-def generar_presentacion_gamma(slides_json, plantilla="gamma_like_template.pptx"):
-    prs = Presentation(plantilla)
-
-    for slide_data in slides_json:
-        if slide_data["tipo"] == "titulo":
-            layout = prs.slide_layouts[0]
-        elif slide_data["tipo"] == "cierre":
-            layout = prs.slide_layouts[2]
-        else:
-            layout = prs.slide_layouts[1]
-
-        slide = prs.slides.add_slide(layout)
-        slide.shapes.title.text = slide_data["titulo"]
-
-        if "bullets" in slide_data:
-            body = slide.placeholders[1]
-            body.text = "\n".join(slide_data["bullets"])
-
-    ruta = "presentacion_gamma_like.pptx"
-    prs.save(ruta)
-    return ruta
-
-client = OpenAI()
-def generar_slides_gamma(tema: str):
-    prompt = construir_prompt_gamma(tema)
-    print("prompt slides",prompt)
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {"role": "system", "content": "Responde únicamente con JSON válido. No uses markdown ni bloques de código."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.4
-    )
-    contenido = response.choices[0].message.content
-    print(contenido)
-    return json.loads(contenido)
 
 
 
