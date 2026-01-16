@@ -5,4 +5,3 @@ requests
 openai
 reportlab
 redis
-some_speech_to_text_service
