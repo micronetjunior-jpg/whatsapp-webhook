@@ -505,8 +505,26 @@ def obtener_historial(telefono):
 
 
 
-from pptx import Presentation
+def construir_prompt_gamma(tema: str) -> str:
+    return f"""
+Eres un generador de presentaciones tipo Gamma.
 
+Genera una presentación sencilla y clara.
+Máximo 6 diapositivas.
+
+Formato de salida: JSON puro (sin texto adicional).
+
+Cada diapositiva debe tener:
+- tipo: "titulo" | "contenido" | "cierre"
+- titulo: string
+- bullets: lista de máximo 4 puntos cortos
+
+Tema:
+{tema}
+"""
+
+
+from pptx import Presentation
 def generar_presentacion_gamma(slides_json, plantilla="gamma_like_template.pptx"):
     prs = Presentation(plantilla)
 
@@ -529,7 +547,21 @@ def generar_presentacion_gamma(slides_json, plantilla="gamma_like_template.pptx"
     prs.save(ruta)
     return ruta
 
+client = OpenAI()
+def generar_slides_gamma(tema: str):
+    prompt = construir_prompt_gamma(tema)
 
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {"role": "system", "content": "Responde únicamente en JSON válido."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.4
+    )
+
+    contenido = response.choices[0].message.content
+    return json.loads(contenido)
 
 
 
