@@ -71,7 +71,8 @@ async def receive_message(request: Request):
                 # Responder
             elif tipo=="audio":
                 guardar_estado("tipo_respuesta","audio")
-                estado = obtener_estado(telefono)["estado"]
+                estado = obtener_estado(telefono+"wait")["estado"]
+                print("estado wait:",estado)
                 if estado != "enviando_audio":
                     media_id = messages["audio"]["id"]
                     print("media_id:",media_id)
@@ -175,9 +176,8 @@ def procesarPregunta(mensaje: str, telefono: str):
 
     if tipo == "audio":
         guardar_estado("tipo_respuesta", "IDLE")
-        guardar_estado(telefono,"enviando_audio")
+        guardar_estado(telefono+"wait","enviando_audio")
         responder_con_audio(telefono,respuestaIA)
-        guardar_estado(telefono,"IDLE")
     else:
         enviar_mensaje(telefono,respuestaIA)
         
@@ -191,6 +191,7 @@ def procesarPregunta(mensaje: str, telefono: str):
             telefono,
             "crearpdf"
         )
+    guardar_estado(telefono+"wait","IDLE")
 # -------------------------------
 # PROCESAMIETO CON IA
 # -------------------------------
