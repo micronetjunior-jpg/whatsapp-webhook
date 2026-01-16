@@ -144,10 +144,11 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
         if mensaje.lower() in ["si", "sí", "s"]:
             texto = estado["data"]["texto"]
             
+            crear_presentacion()
             
-            pdf = generar_pdf_bytes(texto)
-            media_id = subir_pdf_whatsapp(pdf)
-            enviar_pdf_whatsapp(media_id, telefono)
+            #pdf = generar_pdf_bytes(texto)
+            #media_id = subir_pdf_whatsapp(pdf)
+            #enviar_pdf_whatsapp(media_id, telefono)
             guardar_estado(telefono, "IDLE")
     
         elif mensaje.lower() in ["no", "n"]:
@@ -168,14 +169,12 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             print("idle")
         elif verificar_pregunta in ["saludo","saludo."]:
             print("es un saludo")
-            crear_presentacion()
             enviar_mensaje(telefono,"Bienvenido 👋 ¿Cómo puedo ayudarte? escribe o mándame una nota de voz")
         elif verificar_pregunta in ["pregunta","pregunta."]:
             print("es una pregunta")
             procesarPregunta(mensaje,telefono)
         elif any(palabra in mensaje for palabra in saludo):
             print("saludo")
-            crear_presentacion()
             enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
         # Detectar si es una duda o pregunta
         elif any(palabra in mensaje for palabra in palabras_duda):
@@ -524,8 +523,8 @@ def crear_presentacion():
         json=payload,
         timeout=60
     )
-    print(response)
+    print("response present:",response)
     response.raise_for_status()
     resultado = response.json()
-    print(resultado)
+    print("resultado present:",resultado)
 
