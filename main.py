@@ -555,7 +555,7 @@ def crear_presentacion():
 def descargar_pptx(presentation_id: str):
     url = f"{PRESENTON_URL}/presentations/{presentation_id}/download"
 
-    response = requests.get(url, timeout=30)
+    response = requests.get(url, timeout=60)
     response.raise_for_status()
 
     with open("presentacion.pptx", "wb") as f:
