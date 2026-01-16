@@ -70,7 +70,9 @@ async def receive_message(request: Request):
                 print(f"📨 Mensaje de {telefono}: {text}")
                 # Responder
             elif tipo=="audio":
-                enviar_mensaje(telefono,"procesando el audio")
+                media_id = messages["audio"]
+                print(media_id)
+                enviar_mensaje(telefono,"id:"+str(media_id)
                 
             
         # 📬 STATUS (delivered, read, etc.)
@@ -272,3 +274,19 @@ def guardar_estado(telefono, estado, data=None, ttl=300):
 def obtener_estado(telefono):
     data = r.get(f"user:{telefono}")
     return json.loads(data) if data else None
+
+def descargar_audio(media_id):
+    # 1. Obtener URL del media
+    url = f"https://graph.facebook.com/v24.0/{media_id}"
+    headers = {"Authorization": f"Bearer {WHATSAPP_TOKEN}"}
+
+    r = requests.get(url, headers=headers)
+    r.raise_for_status()
+
+    media_url = r.json()["url"]
+
+    # 2. Descargar el audio
+    audio_response = requests.get(media_url, headers=headers)
+    audio_response.raise_for_status()
+
+    return audio_response.content
