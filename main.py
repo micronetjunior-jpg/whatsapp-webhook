@@ -81,9 +81,14 @@ async def receive_message(request: Request):
                 else:
                     audio_bytes = descargar_audio(media_id)
                     texto = transcribir_audio(audio_bytes)
-                    print("texto:",texto)
-                    # Ahora `texto` es como si el usuario lo hubiera escrito
-                    procesar_mensaje(telefono=telefono,textoAudio=texto)
+                    transcrito = obtener_estado(telefono+"transcripcion")
+                    if transcrito and transcrito["estado"] == texto:
+                        print("CONTINUAR")
+                    else:
+                        guardar_estado(telefono+"transcripcion",texto)
+                        print("texto:",texto)
+                        # Ahora `texto` es como si el usuario lo hubiera escrito
+                        procesar_mensaje(telefono=telefono,textoAudio=texto)
             elif tipo=="button":
                 guardar_estado("tipo_respuesta","boton")
                 res = messages["button"]["text"]
