@@ -138,16 +138,18 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
     
         if mensaje.lower() in ["si", "sí", "s"]:
             texto = estado["data"]["texto"]
-            pdf = generar_pdf_bytes(texto)
-            media_id = subir_pdf_whatsapp(pdf)
-            enviar_pdf_whatsapp(media_id, telefono)
+            
+            
+            #pdf = generar_pdf_bytes(texto)
+            #media_id = subir_pdf_whatsapp(pdf)
+            #enviar_pdf_whatsapp(media_id, telefono)
             guardar_estado(telefono, "IDLE")
             
             print("generando slides")
             slides = generar_slides_gamma(texto)
-            print(slides)
+            print("slides:",slides)
             ruta_pptx = generar_presentacion_gamma(slides)
-            print(ruta_pptx)
+            print("ruta:",ruta_pptx)
     
         elif mensaje.lower() in ["no", "n"]:
             enviar_mensaje(telefono, "Perfecto 👍")
@@ -549,7 +551,7 @@ def generar_presentacion_gamma(slides_json, plantilla="gamma_like_template.pptx"
             body = slide.placeholders[1]
             body.text = "\n".join(slide_data["bullets"])
 
-    ruta = "/tmp/presentacion_gamma_like.pptx"
+    ruta = "presentacion_gamma_like.pptx"
     prs.save(ruta)
     return ruta
 
