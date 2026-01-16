@@ -25,6 +25,7 @@ REDISHOST = os.getenv("REDISHOST")
 REDISPORT = os.getenv("REDISPORT")
 REDISPASSWORD = os.getenv("REDIS_PASAWORD")
 KOKOROURL = os.getenv("KOKOROURL")
+PRESENTON_URL = "http://presentonpresentonlatest.railway.internal:80"
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
 # -------------------------------
@@ -169,6 +170,7 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             procesarPregunta(mensaje,telefono)
         elif any(palabra in mensaje for palabra in saludo):
             print("saludo")
+            crear_presentacion()
             enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
         # Detectar si es una duda o pregunta
         elif any(palabra in mensaje for palabra in palabras_duda):
@@ -504,7 +506,22 @@ def guardar_historial(telefono, mensajes):
 def obtener_historial(telefono):
     data = r.get(f"chat:{telefono}")
     return json.loads(data) if data else []
+    
+    
 
-
-
+def crear_presentacion():
+    payload = {
+        "prompt": "Explica la inteligencia artificial en educación",
+        "slides": 6
+    }
+    
+    response = requests.post(
+        f"{PRESENTON_URL}/api/presentations",
+        json=payload,
+        timeout=60
+    )
+    
+    response.raise_for_status()
+    resultado = response.json()
+    print(resultado)
 
