@@ -25,11 +25,11 @@ REDISHOST = os.getenv("REDISHOST")
 REDISPORT = os.getenv("REDISPORT")
 REDISPASSWORD = os.getenv("REDIS_PASAWORD")
 KOKOROURL = os.getenv("KOKOROURL")
-PRESENTON_URL = "http://presentonpresentonlatest.railway.internal:80"
+#PRESENTON_URL = "http://presentonpresentonlatest.railway.internal:80"
 
-PRESENTON_URL = "http://trolley.proxy.rlwy.net:33287"
+#PRESENTON_URL = "http://trolley.proxy.rlwy.net:33287"
 
-PRESENTON_URL = "http://presentonpresentonlatest-ambienteprueba.up.railway.app"
+PRESENTON_URL = "http://presentonpresentonlatest-ambienteprueba.up.railway.app:8000"
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
 # -------------------------------
