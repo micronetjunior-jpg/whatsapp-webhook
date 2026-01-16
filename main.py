@@ -126,6 +126,7 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
     verificar_pregunta = saludo_pregunta(mensaje).lower()
     print("tipo de mensaje:",verificar_pregunta)
     estado = obtener_estado(telefono)
+    print("verificando si PDF")
     if estado and estado["estado"] == "ESPERANDO_CONFIRMACION_PDF":
     
         if mensaje.lower() in ["si", "sí", "s"]:
