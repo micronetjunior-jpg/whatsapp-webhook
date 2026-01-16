@@ -8,7 +8,7 @@ class PresentonClient:
 
     def create_presentation(self, payload: dict):
         r = requests.post(
-            f"{self.internal_url}/api/v1/ppt/presentation/generate",
+            f"{self.public_url}/api/v1/ppt/presentation/generate",
             json=payload,
             timeout=300
         )
@@ -19,7 +19,7 @@ class PresentonClient:
         return f"{self.public_url}{edit_path}"
 
     def download_url(self, presentation_id: str):
-        return f"{self.public_url}/presentations/{presentation_id}/download"
+        return f"{self.internal_url}/presentations/{presentation_id}/download"
 
 from fastapi import FastAPI, Request, Query, Response, UploadFile, File, HTTPException
 from fastapi.responses import PlainTextResponse, FileResponse
