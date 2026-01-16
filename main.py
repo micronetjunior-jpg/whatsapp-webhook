@@ -157,11 +157,10 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
 
 def procesarPregunta(mensaje: str, telefono: str):
     print("procesar IA")
-    respuestaIA = procesarIA(mensaje)
+    respuestaIA = procesarIA(telefono,mensaje)
     
     print("Se procede a remitir respuesta a",telefono)
     
-
     tipo = obtener_estado("tipo_respuesta")["estado"]
     print(tipo)
 
@@ -188,20 +187,36 @@ def procesarPregunta(mensaje: str, telefono: str):
 openai.api_key = OPENAI_API_KEY
 print(OPENAI_API_KEY)
 
-def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
+def procesarIA(telefono: str, solicitud: str, modelo: str = "gpt-4o-mini") -> str:
     """
     Procesa un texto usando la API moderna de OpenAI ChatCompletion.
     """
     print("solicitud:",solicitud)
     try:
         print("vamo al openIA")
+        
+        historial = obtener_historial(telefono)
+        
+        if not historial:
+        historial.append({
+            "role": "system",
+            "content": "Eres un asistente de IA."
+        })
+
+        historial.append({"role": "user", "content": solicitud})
+        
         response = openai.chat.completions.create(
             model=modelo,
-            messages=[{"role": "user", "content": solicitud}],
+            #messages=[
+            #{"role": "user", "content": solicitud}
+            #],
+            messages=historial
             max_tokens=1000,
-            temperature=0.7
+            temperature=0.5
         )
         respuesta = response.choices[0].message.content
+        historial.append({"role": "assistant", "content": respuesta})
+        guardar_historial(telefono, historial)
         print("respuesta:",respuesta)
         return respuesta
     except Exception as e:
@@ -450,4 +465,19 @@ def responder_con_audio(telefono: str, texto: str):
     media_id = subir_audio_whatsapp(ruta_audio)
     enviar_audio_whatsapp(telefono, media_id)
     
-    
+import json
+
+def guardar_historial(telefono, mensajes):
+    r.set(
+        f"chat:{telefono}",
+        json.dumps(mensajes),
+        ex=3600  # 1 hora
+    )
+
+def obtener_historial(telefono):
+    data = r.get(f"chat:{telefono}")
+    return json.loads(data) if data else []
+
+
+
+
