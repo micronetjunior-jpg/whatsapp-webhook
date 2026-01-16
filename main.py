@@ -328,3 +328,42 @@ def kokoro_tts(texto: str) -> bytes:
 
     response.raise_for_status()
     return response.content
+
+def generar_audio_archivo(texto: str) -> str:
+    audio_bytes = kokoro_tts(texto)
+
+    with tempfile.NamedTemporaryFile(
+        delete=False,
+        suffix=".ogg"
+    ) as f:
+        f.write(audio_bytes)
+        return f.name
+        
+def subir_audio_whatsapp(ruta_audio: str) -> str:
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/media"
+
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}"
+    }
+
+    files = {
+        "file": (
+            "audio.ogg",
+            open(ruta_audio, "rb"),
+            "audio/ogg"
+        )
+    }
+
+    data = {
+        "messaging_product": "whatsapp"
+    }
+
+    response = requests.post(
+        url,
+        headers=headers,
+        files=files,
+        data=data
+    )
+
+    response.raise_for_status()
+    return response.json()["id"]  # 👈 media_id
