@@ -217,6 +217,7 @@ def procesarIA(telefono: str, solicitud: str, modelo: str = "gpt-4o-mini") -> st
             temperature=0.5
         )
         respuesta = response.choices[0].message.content
+        print("num caracteres:",len(respuesta))
         historial.append({"role": "assistant", "content": respuesta})
         guardar_historial(telefono, historial)
         print("respuesta:",respuesta)
