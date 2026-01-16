@@ -449,7 +449,6 @@ def subir_audio_whatsapp(ruta_audio: str) -> str:
 
     response.raise_for_status()
     media_id = response.json()["id"]
-    guardar_estado(telefono+"media_id",media_id)
     return media_id # media_id
     
 def enviar_audio_whatsapp(telefono: str, media_id: str):
@@ -480,6 +479,7 @@ def enviar_audio_whatsapp(telefono: str, media_id: str):
 def responder_con_audio(telefono: str, texto: str):
     ruta_audio = generar_audio_mp3(texto)
     media_id = subir_audio_whatsapp(ruta_audio)
+    guardar_estado(telefono+"media_id",media_id)
     enviar_audio_whatsapp(telefono, media_id)
     
 import json
