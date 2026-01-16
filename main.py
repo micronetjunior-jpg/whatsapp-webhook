@@ -57,19 +57,21 @@ async def receive_message(request: Request):
         if "messages" in value:
             messages = value["messages"][0]
             print("payload",messages)
-            
+            telefono=messages["from"]
             tipo=messages["type"]
             print("tipo:",tipo)
+            if tipo=="text":
+                text=messages["text"]["body"]
             
-            telefono=messages["from"]
-            text=messages["text"]["body"]
+                # Procesamiento
+                reply_text = procesar_mensaje(messages,telefono)
+                #print(reply_text)
             
-            # Procesamiento
-            reply_text = procesar_mensaje(messages,telefono)
-            #print(reply_text)
-            
-            print(f"📨 Mensaje de {telefono}: {text}")
-            # Responder
+                print(f"📨 Mensaje de {telefono}: {text}")
+                # Responder
+            elif tipo=="audio":
+                enviar_mensaje(telefoo,"procesando el audio")
+                
             
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
