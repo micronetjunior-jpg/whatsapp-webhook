@@ -82,6 +82,7 @@ async def receive_message(request: Request):
                     audio_bytes = descargar_audio(media_id)
                     texto = transcribir_audio(audio_bytes)
                     transcrito = obtener_estado(telefono+"transcripcion")
+                    print(transcrito)
                     if transcrito and transcrito["estado"] == texto:
                         print("CONTINUAR")
                     else:
