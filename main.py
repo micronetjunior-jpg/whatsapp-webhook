@@ -58,8 +58,11 @@ async def receive_message(request: Request):
             messages = value["messages"][0]
             print("payload",messages)
             
+            tipo=messages["type"]
             telefono=messages["from"]
             text=messages["text"]["body"]
+            
+            print("tipo:",tipo)
             
             # Procesamiento
             reply_text = procesar_mensaje(messages,telefono)
