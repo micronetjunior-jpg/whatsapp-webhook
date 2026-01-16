@@ -29,7 +29,7 @@ PRESENTON_URL = "http://presentonpresentonlatest.railway.internal:80"
 
 PRESENTON_URL = "http://trolley.proxy.rlwy.net:33287"
 
-PRESENTON_URL = "presentonpresentonlatest-ambienteprueba.up.railway.app"
+PRESENTON_URL = "http://presentonpresentonlatest-ambienteprueba.up.railway.app"
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
 # -------------------------------
