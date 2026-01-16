@@ -562,7 +562,7 @@ def generar_slides_gamma(tema: str):
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
-            {"role": "system", "content": "Responde únicamente en JSON válido."},
+            {"role": "system", "content": "Responde únicamente con JSON válido. No uses markdown ni bloques de código."},
             {"role": "user", "content": prompt}
         ],
         temperature=0.4
