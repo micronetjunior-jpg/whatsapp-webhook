@@ -566,7 +566,7 @@ def generar_slides_gamma(tema: str):
         temperature=0.4
     )
     contenido = response.choices[0].message.content
-    print("json:",contenido)
+    print("json:",json.loads(contenido))
     return json.loads(contenido)
 
 
