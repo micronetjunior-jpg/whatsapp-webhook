@@ -25,10 +25,16 @@ REDISHOST = os.getenv("REDISHOST")
 REDISPORT = os.getenv("REDISPORT")
 REDISPASSWORD = os.getenv("REDIS_PASAWORD")
 KOKOROURL = os.getenv("KOKOROURL")
-PRESENTON_URL = "http://presentonpresentonlatest"
 
+#PRESENTON_URL = "http://presentonpresentonlatest"
 #PRESENTON_URL = "http://trolley.proxy.rlwy.net:33287"
 #PRESENTON_URL_APP = "https://presentonpresentonlatest-ambienteprueba.up.railway.app:8000"
+
+# Comunicación interna (POST, generación, API)
+PRESENTON_INTERNAL_URL="http://presentonpresentonlatest:3000"
+# Comunicación pública (download, edit)
+PRESENTON_PUBLIC_URL="https://presentonpresentonlatest-ambienteprueba.up.railway.app"
+
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
 # -------------------------------
@@ -167,7 +173,9 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             #pdf = generar_pdf_bytes(texto)
             #media_id = subir_pdf_whatsapp(pdf)
             #enviar_pdf_whatsapp(media_id, telefono)
-            
+          
+            edit_link = presenton.edit_url(result["edit_path"])
+            download_link = presenton.download_url(result["presentation_id"])
     
         elif mensaje.lower() in ["no", "n"]:
             enviar_mensaje(telefono, "Perfecto 👍")
@@ -528,6 +536,14 @@ def guardar_historial(telefono, mensajes):
 def obtener_historial(telefono):
     data = r.get(f"chat:{telefono}")
     return json.loads(data) if data else []
+    
+    
+
+
+    
+    
+    
+    
     
     
 
