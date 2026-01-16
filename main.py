@@ -320,26 +320,50 @@ def transcribir_audio(audio_bytes: bytes) -> str:
 
     return transcription.text
     
+
 def kokoro_tts(texto: str) -> bytes:
+    payload = {
+        "model": "kokoro",
+        "input": texto,
+        "voice": "af_heart",
+        "response_format": "mp3",
+        "download_format": "mp3",
+        "speed": 1,
+        "stream": False,  # 👈 importante
+        "return_download_link": False,
+        "lang_code": "es",
+        "volume_multiplier": 1,
+        "normalization_options": {
+            "normalize": True,
+            "unit_normalization": False,
+            "url_normalization": True,
+            "email_normalization": True,
+            "optional_pluralization_normalization": True,
+            "phone_normalization": True,
+            "replace_remaining_symbols": True
+        }
+    }
+
     response = requests.post(
-        f"{KOKOROURL}/tts",
-        json={"text": texto},
-        timeout=30
+        f"{KOKOROURL}/v1/audio/speech",
+        json=payload,
+        timeout=60
     )
 
     response.raise_for_status()
-    return response.content
 
-def generar_audio_archivo(texto: str) -> str:
+    return response.content  # 👈 bytes MP3
+
+def generar_audio_mp3(texto: str) -> str:
     audio_bytes = kokoro_tts(texto)
 
     with tempfile.NamedTemporaryFile(
         delete=False,
-        suffix=".ogg"
+        suffix=".mp3"
     ) as f:
         f.write(audio_bytes)
         return f.name
-        
+
 def subir_audio_whatsapp(ruta_audio: str) -> str:
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/media"
 
@@ -349,9 +373,9 @@ def subir_audio_whatsapp(ruta_audio: str) -> str:
 
     files = {
         "file": (
-            "audio.ogg",
+            "audio.mp3",
             open(ruta_audio, "rb"),
-            "audio/ogg"
+            "audio/mpeg"
         )
     }
 
@@ -367,10 +391,10 @@ def subir_audio_whatsapp(ruta_audio: str) -> str:
     )
 
     response.raise_for_status()
-    return response.json()["id"]  # 👈 media_id
+    return response.json()["id"]  # media_id
     
 def responder_con_audio(telefono: str, texto: str):
-    ruta_audio = generar_audio_archivo(texto)
+    ruta_audio = generar_audio_mp3(texto)
     media_id = subir_audio_whatsapp(ruta_audio)
     enviar_audio_whatsapp(telefono, media_id)
     
