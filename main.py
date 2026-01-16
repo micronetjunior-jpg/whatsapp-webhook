@@ -32,7 +32,7 @@ KOKOROURL = os.getenv("KOKOROURL")
 #PRESENTON_URL_APP = "https://presentonpresentonlatest-ambienteprueba.up.railway.app:8000"
 
 # Comunicación interna (POST, generación, API)
-PRESENTON_INTERNAL_URL="http://presentonpresentonlatest:3000"
+PRESENTON_INTERNAL_URL = "http://presentonpresentonlatest:3000"
 # Comunicación pública (download, edit)
 PRESENTON_PUBLIC_URL="https://presentonpresentonlatest-ambienteprueba.up.railway.app"
 
