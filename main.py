@@ -27,7 +27,7 @@ REDISPASSWORD = os.getenv("REDIS_PASAWORD")
 KOKOROURL = os.getenv("KOKOROURL")
 PRESENTON_URL = "http://presentonpresentonlatest.railway.internal:80"
 
-PRESENTON_URL = "presentonpresentonlatest.railway.internal"
+PRESENTON_URL = "https://presentonpresentonlatest.railway.internal"
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
 # -------------------------------
