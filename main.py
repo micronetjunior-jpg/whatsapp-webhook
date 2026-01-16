@@ -102,13 +102,16 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None) -> list:
     
     if textoAudio != None:
         mensaje = textoAudio.lower()
+        guardar_estado(
+            "tipo_respuesta",
+            "audio"
+        )
     else:
         mensaje = texto.get("text", {}).get("body").lower()
     
     verificar_pregunta = saludo_pregunta(mensaje).lower()
     print("tipo de mensaje:",verificar_pregunta)
     estado = obtener_estado(telefono)
-
     if estado and estado["estado"] == "ESPERANDO_CONFIRMACION_PDF":
     
         if mensaje.lower() in ["si", "sí", "s"]:
@@ -153,8 +156,11 @@ def procesarPregunta(mensaje: str, telefono: str):
     
     print("Se procede a remitir respuesta a",telefono)
     enviar_mensaje(telefono,respuestaIA)
-    responder_con_audio(telefono,respuestaIA)
     
+    if obtener_estado("tipo_respuesta") == "audio"
+        responder_con_audio(telefono,respuestaIA)
+        guardar_estado("tipo_respuesta", "IDLE")
+        
     guardar_estado(
         telefono,
         "ESPERANDO_CONFIRMACION_PDF",
