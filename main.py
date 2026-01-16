@@ -48,6 +48,7 @@ async def verify_webhook(request: Request):
 async def receive_message(request: Request):
     data = await request.json()
     print("📩 Evento recibido de Meta:")
+    print("datos:",data)
     try:
         entry = data["entry"][0]
         changes = entry["changes"][0]
