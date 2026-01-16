@@ -74,7 +74,7 @@ async def receive_message(request: Request):
                 texto = transcribir_audio(audio_bytes)
                 print("texto:",texto)
                 # Ahora `texto` es como si el usuario lo hubiera escrito
-                procesar_mensaje(telefono=telefono,textAudio=texto)
+                procesar_mensaje(telefono=telefono,textoAudio=texto)
                 
             
         # 📬 STATUS (delivered, read, etc.)
