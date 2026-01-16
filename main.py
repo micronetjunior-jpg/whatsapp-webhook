@@ -29,7 +29,7 @@ PRESENTON_URL = "http://presentonpresentonlatest.railway.internal:80"
 
 PRESENTON_URL = "http://trolley.proxy.rlwy.net:33287"
 
-PRESENTON_URL = "http://presentonpresentonlatest-ambienteprueba.up.railway.app"
+PRESENTON_URL = "https://presentonpresentonlatest-ambienteprueba.up.railway.app"
 # -------------------------------
 # VERIFICACIÓN DEL WEBHOOK (GET)
 # -------------------------------
@@ -521,7 +521,7 @@ def crear_presentacion():
     }
     
     response = requests.post(
-        f"{PRESENTON_URL}/api/presentations",
+        f"{PRESENTON_URL}/presentations",
         json=payload,
         timeout=60
     )
