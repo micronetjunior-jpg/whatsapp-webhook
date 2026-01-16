@@ -198,10 +198,10 @@ def procesarIA(telefono: str, solicitud: str, modelo: str = "gpt-4o-mini") -> st
         historial = obtener_historial(telefono)
         
         if not historial:
-        historial.append({
-            "role": "system",
-            "content": "Eres un asistente de IA."
-        })
+            historial.append({
+                "role": "system",
+                "content": "Eres un asistente de IA."
+            })
 
         historial.append({"role": "user", "content": solicitud})
         
