@@ -70,7 +70,7 @@ async def receive_message(request: Request):
                 print(f"📨 Mensaje de {telefono}: {text}")
                 # Responder
             elif tipo=="audio":
-                enviar_mensaje(telefoo,"procesando el audio")
+                enviar_mensaje(telefono,"procesando el audio")
                 
             
         # 📬 STATUS (delivered, read, etc.)
