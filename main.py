@@ -8,9 +8,9 @@ class PresentonClient:
 
     def create_presentation(self, payload: dict):
         r = requests.post(
-            f"{self.internal_url}/presentations",
+            f"{self.internal_url}/api/v1/ppt/presentation/generate",
             json=payload,
-            timeout=60
+            timeout=300
         )
         r.raise_for_status()
         return r.json()
