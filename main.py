@@ -131,10 +131,12 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None) -> list:
         #if any(palabra in verificar_pregunta for palabra in saludo_no):
             #procesarPregunta(mensaje,telefono)
         # Detectar saludos
-        if verificar_pregunta in ["saludo"]:
+        if verificar_pregunta in ["saludo","saludo."]:
             print("es un saludo")
-        elif verificar_pregunta in ["pregunta"]:
+            enviar_mensaje(telefono,"Bienvenido 👋 ¿Cómo puedo ayudarte? escribe o mándame una nota de voz")
+        elif verificar_pregunta in ["pregunta","pregunta."]:
             print("es una pregunta")
+            procesarPregunta(mensaje,telefono)
         elif any(palabra in mensaje for palabra in saludo):
             print("saludo")
             enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
