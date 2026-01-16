@@ -170,16 +170,16 @@ def procesarPregunta(mensaje: str, telefono: str):
     else:
         enviar_mensaje(telefono,respuestaIA)
         
-    guardar_estado(
-        telefono,
-        "ESPERANDO_CONFIRMACION_PDF",
-        {"texto": respuestaIA}
-    )
-            
-    enviar_plantilla(
-        telefono,
-        "crearpdf"
-    )
+    if len(respuestaIA) > 1000:
+        guardar_estado(
+            telefono,
+            "ESPERANDO_CONFIRMACION_PDF",
+            {"texto": respuestaIA}
+        )
+        enviar_plantilla(
+            telefono,
+            "crearpdf"
+        )
 # -------------------------------
 # PROCESAMIETO CON IA
 # -------------------------------
