@@ -55,6 +55,7 @@ def download_presentation(presentation_id: str):
     for file in os.listdir(EXPORT_DIR):
         if presentation_id in file:
             file_path = os.path.join(EXPORT_DIR, file)
+            print("FILEPATH:",file_path)
             return FileResponse(
                 file_path,
                 media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
