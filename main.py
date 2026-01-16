@@ -157,7 +157,7 @@ def procesarPregunta(mensaje: str, telefono: str):
     print("Se procede a remitir respuesta a",telefono)
     enviar_mensaje(telefono,respuestaIA)
     
-    if obtener_estado("tipo_respuesta") == "audio"
+    if obtener_estado("tipo_respuesta") == "audio":
         responder_con_audio(telefono,respuestaIA)
         guardar_estado("tipo_respuesta", "IDLE")
         
