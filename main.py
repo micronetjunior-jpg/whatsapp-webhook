@@ -505,4 +505,31 @@ def obtener_historial(telefono):
 
 
 
+from pptx import Presentation
+
+def generar_presentacion_gamma(slides_json, plantilla="gamma_like_template.pptx"):
+    prs = Presentation(plantilla)
+
+    for slide_data in slides_json:
+        if slide_data["tipo"] == "titulo":
+            layout = prs.slide_layouts[0]
+        elif slide_data["tipo"] == "cierre":
+            layout = prs.slide_layouts[2]
+        else:
+            layout = prs.slide_layouts[1]
+
+        slide = prs.slides.add_slide(layout)
+        slide.shapes.title.text = slide_data["titulo"]
+
+        if "bullets" in slide_data:
+            body = slide.placeholders[1]
+            body.text = "\n".join(slide_data["bullets"])
+
+    ruta = "/tmp/presentacion_gamma_like.pptx"
+    prs.save(ruta)
+    return ruta
+
+
+
+
 
