@@ -143,8 +143,11 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             enviar_pdf_whatsapp(media_id, telefono)
             guardar_estado(telefono, "IDLE")
             
+            print("generando slides")
             slides = generar_slides_gamma(texto)
+            print(slides)
             ruta_pptx = generar_presentacion_gamma(slides)
+            print(ruta_pptx)
     
         elif mensaje.lower() in ["no", "n"]:
             enviar_mensaje(telefono, "Perfecto 👍")
