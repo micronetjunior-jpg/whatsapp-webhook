@@ -210,7 +210,7 @@ def procesarIA(telefono: str, solicitud: str, modelo: str = "gpt-4o-mini") -> st
             #messages=[
             #{"role": "user", "content": solicitud}
             #],
-            messages=historial
+            messages=historial,
             max_tokens=1000,
             temperature=0.5
         )
