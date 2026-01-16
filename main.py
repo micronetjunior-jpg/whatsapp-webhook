@@ -155,14 +155,17 @@ def procesarPregunta(mensaje: str, telefono: str):
     respuestaIA = procesarIA(mensaje)
     
     print("Se procede a remitir respuesta a",telefono)
-    enviar_mensaje(telefono,respuestaIA)
+    
 
     tipo = obtener_estado("tipo_respuesta")["estado"]
     print(tipo)
 
     if tipo == "audio":
+        enviar_mensaje(telefono,"Preparando tu respuesta...")
         responder_con_audio(telefono,respuestaIA)
         guardar_estado("tipo_respuesta", "IDLE")
+    else:
+        enviar_mensaje(telefono,respuestaIA)
         
     guardar_estado(
         telefono,
