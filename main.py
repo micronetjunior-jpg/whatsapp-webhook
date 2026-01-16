@@ -71,13 +71,15 @@ async def receive_message(request: Request):
                 # Responder
             elif tipo=="audio":
                 guardar_estado("tipo_respuesta","audio")
-                media_id = messages["audio"]["id"]
-                print("media_id:",media_id)
-                audio_bytes = descargar_audio(media_id)
-                texto = transcribir_audio(audio_bytes)
-                print("texto:",texto)
-                # Ahora `texto` es como si el usuario lo hubiera escrito
-                procesar_mensaje(telefono=telefono,textoAudio=texto)
+                estado = obtener_estado(telefono)["estado"]
+                if estado != "enviando_audio":
+                    media_id = messages["audio"]["id"]
+                    print("media_id:",media_id)
+                    audio_bytes = descargar_audio(media_id)
+                    texto = transcribir_audio(audio_bytes)
+                    print("texto:",texto)
+                    # Ahora `texto` es como si el usuario lo hubiera escrito
+                    procesar_mensaje(telefono=telefono,textoAudio=texto)
             elif tipo=="button":
                 guardar_estado("tipo_respuesta","boton")
                 res = messages["button"]["text"]
@@ -173,7 +175,9 @@ def procesarPregunta(mensaje: str, telefono: str):
 
     if tipo == "audio":
         guardar_estado("tipo_respuesta", "IDLE")
+        guardar_estado(telefono,"enviando_audio")
         responder_con_audio(telefono,respuestaIA)
+        guardar_estado(telefono,"IDLE")
     else:
         enviar_mensaje(telefono,respuestaIA)
         
