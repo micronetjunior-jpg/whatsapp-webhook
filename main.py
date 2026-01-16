@@ -543,7 +543,7 @@ def crear_presentacion():
     response = requests.post(
         f"{PRESENTON_URL}/api/v1/ppt/presentation/generate",
         json=payload,
-        timeout=60
+        timeout=300
     )
     print("RESPONSE present:",response)
     response.raise_for_status()
