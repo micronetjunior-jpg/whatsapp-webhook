@@ -70,7 +70,7 @@ async def receive_message(request: Request):
                 print(f"📨 Mensaje de {telefono}: {text}")
                 # Responder
             elif tipo=="audio":
-                media_id = messages["audio"]["id"][0]
+                media_id = messages["audio"]["id"]
                 print("media_id",media_id)
                 enviar_mensaje(telefono,"id:"+str(media_id))
                 
