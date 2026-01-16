@@ -98,13 +98,14 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?","ayudame","ayúdame"]
     si_no = ["si","sí","si.","sí."]
+    saludo_o_pregunta = ["saludo","pregunta","saludo.","pregunta."]
     
     if textoAudio != None:
         mensaje = textoAudio.lower()
     else:
         mensaje = texto.get("text", {}).get("body").lower()
     
-    verificar_pregunta = esPregunta(mensaje).lower()
+    verificar_pregunta = saludo_pregunta(mensaje).lower()
     print(verificar_pregunta)
     estado = obtener_estado(telefono)
 
@@ -127,10 +128,10 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None) -> list:
                 "Por favor responde SI o NO"
             )
     else:
-        if any(palabra in verificar_pregunta for palabra in si_no):
-            procesarPregunta(mensaje,telefono)
+        #if any(palabra in verificar_pregunta for palabra in saludo_no):
+            #procesarPregunta(mensaje,telefono)
         # Detectar saludos
-        elif any(palabra in mensaje for palabra in saludo):
+        if any(palabra in mensaje for palabra in saludo):
             print("saludo")
             enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
         # Detectar si es una duda o pregunta
@@ -184,11 +185,11 @@ def procesarIA(solicitud: str, modelo: str = "gpt-4o-mini") -> str:
         print("error en try de OpenAI")
         return f"Try openAI, Error procesando la solicitud: {e}"
 
-def esPregunta(pregunta: str, modelo: str = "gpt-4o-mini") -> str:
+def saludo_pregunta(pregunta: str, modelo: str = "gpt-4o-mini") -> str:
     try:
         response = openai.chat.completions.create(
             model=modelo,
-            messages=[{"role": "user", "content": "¿El siguiente texto es una pregunta? "+pregunta+" Solo responde Si o No"}],
+            messages=[{"role": "user", "content": "¿El siguiente texto es un saludo o una pregunta? "+pregunta+" Solo responde saludo o pregunta"}],
             max_tokens=1000,
             temperature=0.7
         )
