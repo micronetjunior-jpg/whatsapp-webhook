@@ -556,7 +556,7 @@ def generar_presentacion_gamma(slides_json, plantilla="gamma_like_template.pptx"
 client = OpenAI()
 def generar_slides_gamma(tema: str):
     prompt = construir_prompt_gamma(tema)
-
+    print("prompt slides",prompt)
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
@@ -565,8 +565,8 @@ def generar_slides_gamma(tema: str):
         ],
         temperature=0.4
     )
-
     contenido = response.choices[0].message.content
+    print("json:",contenido)
     return json.loads(contenido)
 
 
