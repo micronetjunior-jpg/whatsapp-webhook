@@ -71,14 +71,14 @@ async def receive_message(request: Request):
                 print(f"📨 Mensaje de {telefono}: {text}")
                 # Responder
             elif tipo=="audio":
+                media_id = messages["audio"]["id"]
+                print("media_id:",media_id)
                 guardar_estado("tipo_respuesta","audio")
-                estado = obtener_estado(telefono+"wait")
+                estado = obtener_estado(telefono+"media_id")
                 print("estado wait:",estado)
-                if estado and estado["estado"] == "enviando_audio":
+                if estado and estado["estado"] == media_id:
                     print("esperando para enviar audio")
                 else:
-                    media_id = messages["audio"]["id"]
-                    print("media_id:",media_id)
                     audio_bytes = descargar_audio(media_id)
                     texto = transcribir_audio(audio_bytes)
                     print("texto:",texto)
@@ -448,7 +448,9 @@ def subir_audio_whatsapp(ruta_audio: str) -> str:
     )
 
     response.raise_for_status()
-    return response.json()["id"]  # media_id
+    media_id = response.json()["id"]
+    guardar_estado(telefono+"media_id",media_id)
+    return media_id # media_id
     
 def enviar_audio_whatsapp(telefono: str, media_id: str):
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
