@@ -161,8 +161,8 @@ def procesarPregunta(mensaje: str, telefono: str):
     print(tipo)
 
     if tipo == "audio":
-        responder_con_audio(telefono,respuestaIA)
         guardar_estado("tipo_respuesta", "IDLE")
+        responder_con_audio(telefono,respuestaIA)
     else:
         enviar_mensaje(telefono,respuestaIA)
         
