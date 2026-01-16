@@ -549,5 +549,13 @@ def crear_presentacion():
     resultado = response.json()
     id = resultado["presentation_id"]
     print("RESULTADO present:",resultado)
-    
+    return id
 
+def descargar_pptx(presentation_id: str):
+    url = f"{PRESENTON_URL}/presentations/{presentation_id}/download"
+
+    response = requests.get(url, timeout=30)
+    response.raise_for_status()
+
+    with open("presentacion.pptx", "wb") as f:
+        f.write(response.content)
