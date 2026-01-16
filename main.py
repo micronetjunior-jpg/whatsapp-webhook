@@ -212,8 +212,6 @@ def procesarIA(telefono: str, solicitud: str, modelo: str = "gpt-4o-mini") -> st
 
         historial.append({"role": "user", "content": solicitud})
         
-        print(historial)
-        
         response = openai.chat.completions.create(
             model=modelo,
             #messages=[
