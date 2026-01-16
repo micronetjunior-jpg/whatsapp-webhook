@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request, Query, Response
+from fastapi import FastAPI, Request, Query, Response, UploadFile, File
+import some_speech_to_text_service 
 from fastapi.responses import PlainTextResponse
 import openai
 import os
