@@ -533,6 +533,10 @@ Tema:
 
 
 from pptx import Presentation
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATE_PATH = os.path.join(BASE_DIR, "..", "templates", "gamma_like_template.pptx")
+prs = Presentation(TEMPLATE_PATH)
+
 def generar_presentacion_gamma(slides_json, plantilla="gamma_like_template.pptx"):
     prs = Presentation(plantilla)
 
