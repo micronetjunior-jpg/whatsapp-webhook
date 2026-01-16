@@ -84,6 +84,7 @@ async def receive_message(request: Request):
                 print(f"📨 Mensaje de {telefono}: {res}")
             else:
                 guardar_estado("tipo_respuesta","IDLE")
+                guardar_estado(telefono, "IDLE")
             
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
