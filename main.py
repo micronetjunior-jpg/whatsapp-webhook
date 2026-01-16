@@ -77,8 +77,8 @@ async def receive_message(request: Request):
                 procesar_mensaje(telefono=telefono,textoAudio=texto)
             elif tipo=="button":
                 res = messages["button"]["text"]
-                print(res)
-                
+                reply_text = procesar_mensaje(telefono=telefono,textoRespuesta=res)
+                print(f"📨 Mensaje de {telefono}: {res}")
             
         # 📬 STATUS (delivered, read, etc.)
         elif "statuses" in value:
@@ -97,7 +97,7 @@ async def receive_message(request: Request):
 # -------------------------------
 # LÓGICA DEL MENSAJE
 # -------------------------------
-def procesar_mensaje(texto=None,telefono=None,textoAudio = None) -> list:
+def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=None) -> list:
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?","ayudame","ayúdame"]
     si_no = ["si","sí","si.","sí."]
@@ -106,6 +106,8 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None) -> list:
     if textoAudio != None:
         mensaje = textoAudio.lower()
         guardar_estado("tipo_respuesta","audio")
+    elif textoRespuesta != None:
+        mensaje = textoRespuesta.lower()
     else:
         mensaje = texto.get("text", {}).get("body").lower()
         guardar_estado("tipo_respuesta","texto")
