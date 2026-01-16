@@ -137,7 +137,9 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
         #if any(palabra in verificar_pregunta for palabra in saludo_no):
             #procesarPregunta(mensaje,telefono)
         # Detectar saludos
-        if verificar_pregunta in ["saludo","saludo."]:
+        if mensaje.lower() in ["si","no"]:
+            print("idle")
+        elif verificar_pregunta in ["saludo","saludo."]:
             print("es un saludo")
             enviar_mensaje(telefono,"Bienvenido 👋 ¿Cómo puedo ayudarte? escribe o mándame una nota de voz")
         elif verificar_pregunta in ["pregunta","pregunta."]:
