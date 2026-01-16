@@ -175,9 +175,9 @@ def procesarPregunta(mensaje: str, telefono: str):
         {"texto": respuestaIA}
     )
             
-    enviar_mensaje(
+    enviar_plantilla(
         telefono,
-        "¿Deseas recibir esta información en PDF? Responde SI o NO"
+        "flow2"
     )
 # -------------------------------
 # PROCESAMIETO CON IA
@@ -223,20 +223,31 @@ def saludo_pregunta(pregunta: str, modelo: str = "gpt-4o-mini") -> str:
 
 def enviar_mensaje(to: str, message: str):
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
-
     headers = {
         "Authorization":f"Bearer {WHATSAPP_TOKEN}",
         "Content-Type":"application/json"
     }
-
     payload = {
         "messaging_product":"whatsapp",
         "to":to,
         "text":{"body":message}
     }
-
     response = requests.post(url, headers=headers, json=payload)
+    print("📤 Respuesta enviada:", response.status_code, response.text)
 
+def enviar_plantilla(to: str, nombre: str):
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
+    headers = {
+        "Authorization":f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type":"application/json"
+    }
+    payload = {
+        "messaging_product":"whatsapp",
+        "to":to,
+        "type":"template",
+        "template":{"name":nombre,language:{"code":"en_US"}}
+    }
+    response = requests.post(url, headers=headers, json=payload)
     print("📤 Respuesta enviada:", response.status_code, response.text)
 
 def generar_pdf_bytes(texto: str) -> bytes:
