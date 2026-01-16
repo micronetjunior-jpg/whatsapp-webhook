@@ -25,7 +25,7 @@ REDISHOST = os.getenv("REDISHOST")
 REDISPORT = os.getenv("REDISPORT")
 REDISPASSWORD = os.getenv("REDIS_PASAWORD")
 KOKOROURL = os.getenv("KOKOROURL")
-PRESENTON_URL = "presentonpresentonlatest.railway.internal"
+PRESENTON_URL = "http://presentonpresentonlatest"
 
 #PRESENTON_URL = "http://trolley.proxy.rlwy.net:33287"
 #PRESENTON_URL_APP = "https://presentonpresentonlatest-ambienteprueba.up.railway.app:8000"
