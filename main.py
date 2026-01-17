@@ -9,15 +9,14 @@ class PresentonClient:
         self.proxy_url = "http://caboose.proxy.rlwy.net:19454"
     def create_presentation(self, payload: dict):
         url = f"{self.proxy_url}/api/v1/ppt/presentation/generate"
-        print("URL:",url)
+    
         espacios()
         res = requests.post(
             url,
             json=payload,
             timeout=300
         )
-        print("RES CREAR:",res.json())
-        espacios()
+        
         res.raise_for_status()
         return res.json()
 
@@ -194,21 +193,13 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             texto = estado["data"]["texto"]
             guardar_estado(telefono, "IDLE")
             
-            #payload=generar_presentacion()
-            #print("PAYLOAD:",payload)
-            #descargar_pptx(presentation_id)
-            
             pdf = generar_pdf_bytes(texto)
             media_id = subir_pdf_whatsapp(pdf)
             enviar_pdf_whatsapp(media_id, telefono)
             
-            payload = generar_presentacion()
-            print("PAYLOAD;",payload)
-            espacios()
-          
-            #edit_link = presenton.edit_url(result["edit_path"])
-            #download_link = presenton.download_url(result["presentation_id"])
-    
+            #payload = generar_presentacion()
+            #print("PAYLOAD;",payload)
+            
         elif mensaje.lower() in ["no", "n"]:
             enviar_mensaje(telefono, "Perfecto 👍")
             guardar_estado(telefono, "IDLE")
@@ -570,8 +561,6 @@ def obtener_historial(telefono):
 
 presenton = PresentonClient() 
 def generar_presentacion():
-    print("GENERANDO TEXTO")
-    
     payload = {
         "content": "Explica la inteligencia artificial en educación",
         "n_slides": 5,
@@ -580,26 +569,12 @@ def generar_presentacion():
         "export_as": "pptx"
         }
     
-    print("PAYLOAD:",payload)
-    espacios()
-    
-    print("CREANDO PRESENTACIÓN...")
     # 1️⃣ Llamada interna (Railway private network)
     result = presenton.create_presentation(payload)
-    print("RESULTADO PRESENTACIÓN,", result)
-    espacios()
+    
     # 2️⃣ Construcción de enlaces (esto es lo que preguntabas)
-    
-    print("procesando URL link")
     edit_link = presenton.edit_url(result["edit_path"])
-    print("URL LINK",edit_link)
-    espacios()
-    
-    print("procesando Download link")
     download_link = presenton.download_url(result["presentation_id"])
-    print("DOWN LINK",edit_link)
-    espacios()
-    
     # 3️⃣ Retorno o uso
     return {
         "id": result["presentation_id"],
