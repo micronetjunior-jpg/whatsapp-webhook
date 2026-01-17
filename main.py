@@ -565,7 +565,7 @@ def obtener_historial(telefono):
 
 presenton = PresentonClient() 
 def generar_presentacion():
-    print("GENERANDO TEXTO"]
+    print("GENERANDO TEXTO")
     payload = {
         "title": "Inteligencia Artificial en Educación",
         "slides": [
