@@ -6,10 +6,6 @@ from services.tts import *
 
 async def handle_message(data):
     msg = data["entry"][0]["changes"][0]["value"]["messages"][0]
-    
-    print("data",data["entry"][0]["changes"][0])
-    print("MSG:",msg)
-    
     telefono = msg["from"]
 
     if not acquire_user_lock(telefono):
