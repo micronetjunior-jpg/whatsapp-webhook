@@ -33,7 +33,13 @@ async def handle_message(data):
             audio_res = text_to_speech(respuesta)
             mime = "audio/ogg"
             media_id_sent = upload_media(audio_res, mime, "audio_respuesta")
-            send_audio(telefono, media_id_sent)
+            print("MEDIA",media_id_sent)
+            print()
+            print()
+            
+            #send_audio(telefono, media_id_sent)
+            
+            
             set_event(media_id, "DONE")
     finally:
         release_user_lock(telefono)
