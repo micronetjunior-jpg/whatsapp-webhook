@@ -201,6 +201,10 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             pdf = generar_pdf_bytes(texto)
             media_id = subir_pdf_whatsapp(pdf)
             enviar_pdf_whatsapp(media_id, telefono)
+            
+            payload = generar_presentacion()
+            print("PAYLOAD;",payload)
+            espacios()
           
             #edit_link = presenton.edit_url(result["edit_path"])
             #download_link = presenton.download_url(result["presentation_id"])
@@ -224,10 +228,6 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
         elif verificar_pregunta in ["saludo","saludo."]:
             
             enviar_mensaje(telefono,"Bienvenido 👋 ¿Cómo puedo ayudarte? escribe o mándame una nota de voz")
-            
-            #payload = generar_presentacion()
-            #print(payload)
-            
         
         elif verificar_pregunta in ["pregunta","pregunta."]:
             
@@ -605,7 +605,7 @@ def generar_presentacion():
         "id": result["presentation_id"],
         "edit_link": edit_link,
         "download_link": download_link
-    }
+        }
     
 
 def crear_presentacion():
