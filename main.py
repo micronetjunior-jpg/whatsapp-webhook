@@ -571,13 +571,15 @@ def obtener_historial(telefono):
 presenton = PresentonClient() 
 def generar_presentacion():
     print("GENERANDO TEXTO")
+    
     payload = {
-        "title": "Inteligencia Artificial en Educación",
-        "slides": [
-            {"title": "Introducción", "content": "¿Qué es la IA?"},
-            {"title": "Aplicaciones", "content": "Educación, salud, industria"}
-        ]
-    }
+        "content": "Explica la inteligencia artificial en educación",
+        "n_slides": 5,
+        "language": "Spanish",
+        "template": "general",
+        "export_as": "pptx"
+        }
+    
     print("PAYLOAD:",payload)
     espacios()
     
