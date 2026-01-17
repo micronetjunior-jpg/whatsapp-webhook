@@ -221,6 +221,11 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
         elif verificar_pregunta in ["saludo","saludo."]:
             print("es un saludo")
             enviar_mensaje(telefono,"Bienvenido 👋 ¿Cómo puedo ayudarte? escribe o mándame una nota de voz")
+            
+            payload = generar_presentacion()
+            print("PAYLOAD:",payload)
+            
+        
         elif verificar_pregunta in ["pregunta","pregunta."]:
             print("es una pregunta")
             procesarPregunta(mensaje,telefono)
