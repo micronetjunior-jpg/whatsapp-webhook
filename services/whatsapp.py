@@ -28,7 +28,7 @@ def upload_media(file_bytes, mime, filename):
 
 def send_audio(to, media_id):
     requests.post(
-        f"{BASE_URL}/messages",
+        f"{BASE_URL}/media",
         headers={"Authorization": f"Bearer {WHATSAPP_TOKEN}"},
         json={
             "messaging_product": "whatsapp",
