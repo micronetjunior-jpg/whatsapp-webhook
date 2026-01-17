@@ -10,6 +10,7 @@ def extract_message(payload: dict) -> dict | None:
     except (KeyError, IndexError, TypeError):
         return None
 
+temp1=None
 async def handle_message(data):
     msg = extract_message(data)
     if not msg:
@@ -23,9 +24,13 @@ async def handle_message(data):
 
     try:
         if msg["type"] == "text":
+            if get_event(temp1):
+                return
+            set_event(temp1, "PROCESSING")
             respuesta = ask_ai(telefono, msg["text"]["body"])
             send_text(telefono, respuesta)
-
+            send_template(telefono,"crearpdf,"es")
+            set_event(temp1, "DONE")
         if msg["type"] == "audio":
             media_id = msg["audio"]["id"]
             if get_event(media_id):
