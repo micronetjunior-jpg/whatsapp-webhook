@@ -35,9 +35,8 @@ async def handle_message(data):
             audio = download_media(media_id)
             texto = transcribir_audio(audio)
             respuesta = ask_ai(telefono, texto)
-            audio_res = generar_audio_mp3(respuesta)
-            mime = "audio/ogg"
-            media_id_sent = upload_media(audio_res, mime, "audio_respuesta")
+            audio_path = generar_audio_mp3(respuesta)
+            media_id_sent = subir_audio_ruta(audio_path)
             send_audio(telefono, media_id_sent)
             set_event(media_id, "DONE")
     finally:
