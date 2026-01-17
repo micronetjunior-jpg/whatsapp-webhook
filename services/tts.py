@@ -30,3 +30,12 @@ def text_to_speech(texto):
     )
     response.raise_for_status()
     return response.content
+    
+def generar_audio_mp3(texto: str) -> str:
+    audio_bytes = text_to_speech(texto)
+    with tempfile.NamedTemporaryFile(
+        delete=False,
+        suffix=".mp3"
+    ) as f:
+        f.write(audio_bytes)
+        return f.name
