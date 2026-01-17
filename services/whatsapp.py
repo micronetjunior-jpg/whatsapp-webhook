@@ -77,3 +77,17 @@ def send_template(to,name,lang):
         "template":{"name":name,"language":{"code":"es"}}
     }
     response = requests.post(url, headers=headers, json=payload)
+
+def subir_pdf(pdf_bytes: bytes) -> str:
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/media"
+    headers = {"Authorization": f"Bearer {WHATSAPP_TOKEN}"}
+
+    files = {
+        "file": ("respuesta.pdf", pdf_bytes, "application/pdf"),
+        "type": (None, "application/pdf"),
+        "messaging_product": (None, "whatsapp")
+    }
+
+    response = requests.post(url, headers=headers, files=files)
+    response.raise_for_status()
+    return response.json()["id"]
