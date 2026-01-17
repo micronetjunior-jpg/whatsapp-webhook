@@ -192,10 +192,10 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
         if mensaje.lower() in ["si", "sí", "s"]:
             texto = estado["data"]["texto"]
             guardar_estado(telefono, "IDLE")
-            
             pdf = generar_pdf_bytes(texto)
             media_id = subir_pdf_whatsapp(pdf)
             enviar_pdf_whatsapp(media_id, telefono)
+            enviar_mensaje(telefono,"¿Quieres que te genere una presentación con la temática más profundizada?")
             
             #payload = generar_presentacion()
             #print("PAYLOAD;",payload)
