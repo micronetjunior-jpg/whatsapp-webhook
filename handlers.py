@@ -25,7 +25,8 @@ async def handle_message(data):
         if msg["type"] == "text":
             respuesta = ask_ai(telefono, msg["text"]["body"])
             send_text(telefono, respuesta)
-            send_template(telefono,"crearpdf","es")
+            if len(respuesta) > 1073:
+                send_template(telefono,"crearpdf","es")
 
         if msg["type"] == "audio":
             media_id = msg["audio"]["id"]
@@ -39,6 +40,8 @@ async def handle_message(data):
             audio_path = generar_audio_mp3(respuesta)
             media_id_sent = subir_audio_ruta(audio_path)
             send_audio(telefono, media_id_sent)
+            if len(respuesta) > 1073:
+                send_template(telefono,"crearpdf","es")
             set_event(media_id, "DONE")
     finally:
         release_user_lock(telefono)
