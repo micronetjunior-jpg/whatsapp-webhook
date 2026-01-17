@@ -30,7 +30,12 @@ async def handle_message(data):
             audio = download_media(media_id)
             texto = transcribir_audio(audio)
             respuesta = ask_ai(telefono, texto)
-            send_text(telefono, respuesta)
+            
+
+            audio_res = text_to_speech(respuesta)
+            print(audio_res+\n\n\n)
+            
+            send_text(telefono, "respuesta")
             set_event(media_id, "DONE")
     finally:
         release_user_lock(telefono)
