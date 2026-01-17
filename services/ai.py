@@ -21,3 +21,19 @@ def ask_ai(telefono, texto):
     historial.append({"role": "assistant", "content": respuesta})
     guardar_historial(telefono, historial)
     return respuesta
+    
+    
+from openai import OpenAI
+import tempfile
+client = OpenAI(api_key=OPENAI_API_KEY)
+def transcribir_audio(audio_bytes: bytes) -> str:
+    with tempfile.NamedTemporaryFile(suffix=".ogg") as f:
+        f.write(audio_bytes)
+        f.flush()
+
+        transcription = client.audio.transcriptions.create(
+            file=open(f.name, "rb"),
+            model="gpt-4o-mini-transcribe"
+        )
+
+    return transcription.text
