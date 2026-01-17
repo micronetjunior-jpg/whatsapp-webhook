@@ -16,7 +16,8 @@ class PresentonClient:
             json=payload,
             timeout=300
         )
-        print("RES CREAR:",res)
+        print("RES CREAR:",res.json())
+        espacios()
         res.raise_for_status()
         return res.json()
 
