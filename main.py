@@ -8,7 +8,7 @@ class PresentonClient:
         self.proxy_url = "http://caboose.proxy.rlwy.net:19454"
     def create_presentation(self, payload: dict):
         url = f"{self.internal_url}/api/v1/ppt/presentation/generate"
-        print("URL",url)
+        
         r = requests.post(
             json=payload,
             timeout=300
@@ -85,7 +85,7 @@ def download_presentation(presentation_id: str):
     for file in os.listdir(EXPORT_DIR):
         if presentation_id in file:
             file_path = os.path.join(EXPORT_DIR, file)
-            print("FILEPATH:",file_path)
+            
             return FileResponse(
                 file_path,
                 media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -100,8 +100,7 @@ def download_presentation(presentation_id: str):
 @app.post("/webhook")
 async def receive_message(request: Request):
     data = await request.json()
-    print("📩 Evento recibido de Meta:")
-    print("datos:",data)
+    
     try:
         entry = data["entry"][0]
         changes = entry["changes"][0]
@@ -110,12 +109,12 @@ async def receive_message(request: Request):
         # 📨 MENSAJE DEL USUARIO
         if "messages" in value:
             messages = value["messages"][0]
-            print("payload",messages)
+            
             telefono=messages["from"]
             tipo=messages["type"]
-            print("tipo:",tipo)
+            
             if tipo=="text":
-                print("procesando respuesta")
+                
                 guardar_estado("tipo_respuesta","texto")
                 text=messages["text"]["body"]
                 # Procesamiento
@@ -125,22 +124,22 @@ async def receive_message(request: Request):
                 # Responder
             elif tipo=="audio":
                 media_id = messages["audio"]["id"]
-                print("media_id:",media_id)
+                
                 guardar_estado("tipo_respuesta","audio")
                 estado = obtener_estado(telefono+"media_id")
-                print("estado wait:",estado)
+                
                 if estado and estado["estado"] == media_id:
                     print("esperando para enviar audio")
                 else:
                     audio_bytes = descargar_audio(media_id)
                     texto = transcribir_audio(audio_bytes)
                     transcrito = obtener_estado(telefono+"transcripcion")
-                    print(transcrito)
+                    
                     if transcrito and transcrito["estado"] == texto:
                         print("CONTINUAR")
                     else:
                         guardar_estado(telefono+"transcripcion",texto)
-                        print("texto:",texto)
+                        
                         # Ahora `texto` es como si el usuario lo hubiera escrito
                         procesar_mensaje(telefono=telefono,textoAudio=texto)
             elif tipo=="button":
@@ -168,7 +167,7 @@ async def receive_message(request: Request):
 # LÓGICA DEL MENSAJE
 # -------------------------------
 def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=None) -> list:
-    print("procesando mensaje")
+    
     saludo = ["hola", "buenas", "como estas", "buenas tardes"]
     palabras_duda = ["duda", "pregunta", "consulta", "no entiendo", "ayuda","?","ayudame","ayúdame"]
     si_no = ["si","sí","si.","sí."]
@@ -183,9 +182,7 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
         guardar_estado("tipo_respuesta","texto")
     
     verificar_pregunta = saludo_pregunta(mensaje).lower()
-    print("tipo de mensaje:",verificar_pregunta)
     estado = obtener_estado(telefono)
-    print("verificando si PDF")
     if estado and estado["estado"] == "ESPERANDO_CONFIRMACION_PDF":
     
         if mensaje.lower() in ["si", "sí", "s"]:
@@ -220,18 +217,18 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
         if mensaje.lower() in ["si","no"]:
             print("idle")
         elif verificar_pregunta in ["saludo","saludo."]:
-            print("es un saludo")
+            
             enviar_mensaje(telefono,"Bienvenido 👋 ¿Cómo puedo ayudarte? escribe o mándame una nota de voz")
             
             payload = generar_presentacion()
-            print("PAYLOAD:",payload)
+            
             
         
         elif verificar_pregunta in ["pregunta","pregunta."]:
-            print("es una pregunta")
+            
             procesarPregunta(mensaje,telefono)
         elif any(palabra in mensaje for palabra in saludo):
-            print("saludo")
+            
             enviar_mensaje(telefono,"Hola 👋 ¿Cómo puedo ayudarte?")
         # Detectar si es una duda o pregunta
         elif any(palabra in mensaje for palabra in palabras_duda):
@@ -241,13 +238,11 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             enviar_mensaje(telefono, "Por favor, escribe tu duda o pregunta completa para poder ayudarte.")
 
 def procesarPregunta(mensaje: str, telefono: str):
-    print("procesar IA")
+    
     respuestaIA = procesarIA(telefono,mensaje)
     
-    print("Se procede a remitir respuesta a",telefono)
-    
     tipo = obtener_estado("tipo_respuesta")["estado"]
-    print(tipo)
+    
 
     if tipo == "audio":
         guardar_estado("tipo_respuesta", "IDLE")
@@ -272,15 +267,13 @@ def procesarPregunta(mensaje: str, telefono: str):
 # -------------------------------
 
 openai.api_key = OPENAI_API_KEY
-print(OPENAI_API_KEY)
 
 def procesarIA(telefono: str, solicitud: str, modelo: str = "gpt-4o-mini") -> str:
     """
     Procesa un texto usando la API moderna de OpenAI ChatCompletion.
     """
-    print("solicitud:",solicitud)
     try:
-        print("vamo al openIA")
+        
         
         historial = obtener_historial(telefono)
         
@@ -302,10 +295,10 @@ def procesarIA(telefono: str, solicitud: str, modelo: str = "gpt-4o-mini") -> st
             temperature=0.5
         )
         respuesta = response.choices[0].message.content
-        print("num caracteres:",len(respuesta))
+        
         historial.append({"role": "assistant", "content": respuesta})
         guardar_historial(telefono, historial)
-        print("respuesta:",respuesta)
+        
         return respuesta
     except Exception as e:
         print("error en try de OpenAI")
@@ -320,10 +313,9 @@ def saludo_pregunta(pregunta: str, modelo: str = "gpt-4o-mini") -> str:
             temperature=0.7
         )
         respuesta = response.choices[0].message.content
-        print("respuesta:",respuesta)
         return respuesta
     except Exception as e:
-        print("error en try de OpenAI")
+        
         return f"Try openAI, Error procesando la solicitud: {e}"
 
 def enviar_mensaje(to: str, message: str):
@@ -573,7 +565,7 @@ def obtener_historial(telefono):
 
 presenton = PresentonClient() 
 def generar_presentacion():
-    print("iniciando la generación")
+    
     payload = {
         "title": "Inteligencia Artificial en Educación",
         "slides": [
@@ -581,18 +573,16 @@ def generar_presentacion():
             {"title": "Aplicaciones", "content": "Educación, salud, industria"}
         ]
     }
-    print("PAYLOAD PRESENTON:",payload)
 
     # 1️⃣ Llamada interna (Railway private network)
     result = presenton.create_presentation(payload)
-    print("crear:",result)
 
     # 2️⃣ Construcción de enlaces (esto es lo que preguntabas)
-    print("OBTENER EDIT...")
+    
     edit_link = presenton.edit_url(result["edit_path"])
-    print("OBTENER LINK..")
+    
     download_link = presenton.download_url(result["presentation_id"])
-    print("ALISTANDO RETORNO...")
+    
     # 3️⃣ Retorno o uso
     return {
         "id": result["presentation_id"],
@@ -615,12 +605,12 @@ def crear_presentacion():
         json=payload,
         timeout=300
     )
-    print("RESPONSE present:",response)
+    
     response.raise_for_status()
     resultado = response.json()
-    print("RESULTADO present:",resultado)
+    
     id = resultado["presentation_id"]
-    print("id",id)
+    
     return id
 
 def descargar_pptx(presentation_id: str):
@@ -631,3 +621,12 @@ def descargar_pptx(presentation_id: str):
 
     with open("presentacion.pptx", "wb") as f:
         f.write(response.content)
+        
+        
+def espacios():
+    print()
+    print()
+    print()
+    print()
+    print()
+    
