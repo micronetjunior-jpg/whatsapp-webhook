@@ -31,10 +31,10 @@ async def handle_message(data):
             texto = transcribir_audio(audio)
             respuesta = ask_ai(telefono, texto)
             
-
             audio_res = text_to_speech(respuesta)
-            print(audio_res+\n\n\n)
-            
+            print(audio_res)
+            print()
+            print()
             send_text(telefono, "respuesta")
             set_event(media_id, "DONE")
     finally:
