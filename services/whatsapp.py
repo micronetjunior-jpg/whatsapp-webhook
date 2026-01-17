@@ -38,6 +38,27 @@ def send_audio(to, media_id):
         }
     )
 
+def subir_audio_ruta(ruta_audio: str) -> str:
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/media"
+    headers = {"Authorization": f"Bearer {WHATSAPP_TOKEN}"}
+    files = {
+        "file": (
+            "audio.mp3",
+            open(ruta_audio, "rb"),
+            "audio/mpeg"
+        )
+    }
+    data = {"messaging_product": "whatsapp"}
+    response = requests.post(
+        url,
+        headers=headers,
+        files=files,
+        data=data
+    )
+    response.raise_for_status()
+    media_id = response.json()["id"]
+    return media_id # media_id
+
 def download_media(media_id):
     headers = {"Authorization": f"Bearer {WHATSAPP_TOKEN}"}
     url = requests.get(
