@@ -75,6 +75,6 @@ def send_template(to,name,lang):
             "messaging_product": "whatsapp",
             "to": to,
             "type":"template",
-            "template":{"name": name,"language":{"code";"es"}}}
+            "template":{"name": name,"language":{"code":"es"}}
         }
     )
