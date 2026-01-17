@@ -68,13 +68,10 @@ def download_media(media_id):
     return requests.get(url, headers=headers).content
     
 def send_template(to,name,lang):
-    requests.post(
-        f"{BASE_URL}/messages",
-        headers={"Authorization": f"Bearer {WHATSAPP_TOKEN}"},
-        json={
-            "messaging_product": "whatsapp",
-            "to": to,
-            "type":"template",
-            "template":{"name": name,"language":{"code":"es"}}
-        }
-    )
+    payload = {
+        "messaging_product":"whatsapp",
+        "to":to,
+        "type":"template",
+        "template":{"name":name,"language":{"code":"es"}}
+    }
+    response = requests.post(url, headers=headers, json=payload)
