@@ -27,12 +27,17 @@ async def handle_message(data):
             send_text(telefono, respuesta)
             if len(respuesta) > 1073:
                 send_template(telefono,"crearpdf","es")
-
-        if msg["type"] == "audio":
+        if msg["type"] == "button":
+            respuesta = msg["button"]["text"])
+            if get_event("pdf") == "generar":
+                if respuesta.lower() in ["si","sí","s"]:
+                    send_text(telefono, "generando pdf")
+                    set_event("pdf",""]
+            
+        elif msg["type"] == "audio":
             media_id = msg["audio"]["id"]
             if get_event(media_id):
                 return
-
             set_event(media_id, "PROCESSING")
             audio = download_media(media_id)
             texto = transcribir_audio(audio)
