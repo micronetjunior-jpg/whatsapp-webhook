@@ -25,7 +25,7 @@ async def handle_message(data):
         if msg["type"] == "text":
             respuesta = ask_ai(telefono, msg["text"]["body"])
             send_text(telefono, respuesta)
-            send_template(telefono,"creadpdf","es")
+            send_template(telefono,"crearpdf","es")
 
         if msg["type"] == "audio":
             media_id = msg["audio"]["id"]
