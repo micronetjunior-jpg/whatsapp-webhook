@@ -1,5 +1,6 @@
 import requests
 from config import KOKOROURL
+import tempfile
 
 def text_to_speech(texto):
     payload = {
