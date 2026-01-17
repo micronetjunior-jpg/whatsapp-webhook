@@ -5,7 +5,7 @@ class PresentonClient:
     def __init__(self):
         self.internal_url = os.getenv("PRESENTON_INTERNAL_URL")
         self.public_url = os.getenv("PRESENTON_PUBLIC_URL")
-        self.proxy_url = "caboose.proxy.rlwy.net:19454"
+        self.proxy_url = "http://caboose.proxy.rlwy.net:19454"
     def create_presentation(self, payload: dict):
         r = requests.post(
             f"{self.proxy_url}/api/v1/ppt/presentation/generate",
