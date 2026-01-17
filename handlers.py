@@ -32,7 +32,7 @@ async def handle_message(data):
             respuesta = ask_ai(telefono, texto)
             audio_res = text_to_speech(respuesta)
             mime = "application/octet-stream"
-            media_id = upload_media(audio_res,",mime, "audio_respuesta")
+            media_id = upload_media(audio_res, mime, "audio_respuesta")
             send_audio(telefono, media_id)
             set_event(media_id, "DONE")
     finally:
