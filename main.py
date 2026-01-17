@@ -191,12 +191,12 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             texto = estado["data"]["texto"]
             guardar_estado(telefono, "IDLE")
             
-            payload=generar_presentacion()
-            print("PAYLOAD:",payload)
-            #descargar_pptx(presentation_id)
-            #pdf = generar_pdf_bytes(texto)
-            #media_id = subir_pdf_whatsapp(pdf)
-            #enviar_pdf_whatsapp(media_id, telefono)
+            #payload=generar_presentacion()
+            #print("PAYLOAD:",payload)
+            descargar_pptx(presentation_id)
+            pdf = generar_pdf_bytes(texto)
+            media_id = subir_pdf_whatsapp(pdf)
+            enviar_pdf_whatsapp(media_id, telefono)
           
             #edit_link = presenton.edit_url(result["edit_path"])
             #download_link = presenton.download_url(result["presentation_id"])
