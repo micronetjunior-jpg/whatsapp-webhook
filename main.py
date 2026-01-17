@@ -8,7 +8,7 @@ class PresentonClient:
         self.proxy_url = "http://caboose.proxy.rlwy.net:19454"
     def create_presentation(self, payload: dict):
         r = requests.post(
-            f"{self.proxy_url}/api/v1/ppt/presentation/generate",
+            f"{self.internal_url}/api/v1/ppt/presentation/generate",
             json=payload,
             timeout=300
         )
