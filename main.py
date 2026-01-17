@@ -193,7 +193,8 @@ def procesar_mensaje(texto=None,telefono=None,textoAudio = None, textoRespuesta=
             
             #payload=generar_presentacion()
             #print("PAYLOAD:",payload)
-            descargar_pptx(presentation_id)
+            #descargar_pptx(presentation_id)
+            
             pdf = generar_pdf_bytes(texto)
             media_id = subir_pdf_whatsapp(pdf)
             enviar_pdf_whatsapp(media_id, telefono)
