@@ -10,7 +10,6 @@ class PresentonClient:
         url = f"{self.internal_url}/api/v1/ppt/presentation/generate"
         print("URL",url)
         r = requests.post(
-
             json=payload,
             timeout=300
         )
