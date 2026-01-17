@@ -38,7 +38,7 @@ async def handle_message(data):
             audio_res = text_to_speech(respuesta)
             mime = "audio/ogg"
             media_id_sent = upload_media(audio_res, mime, "audio_respuesta")
-            send_audio(telefono, media_id_sent)
+            send_audio(telefono, media_id)
             
             set_event(media_id, "DONE")
     finally:
