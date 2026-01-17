@@ -32,7 +32,7 @@ async def handle_message(data):
             if get_event("pdf") == "generar":
                 if respuesta.lower() in ["si","sí","s"]:
                     send_text(telefono, "generando pdf")
-                    set_event("pdf",""]
+                    set_event("pdf","")
             
         elif msg["type"] == "audio":
             media_id = msg["audio"]["id"]
@@ -47,6 +47,7 @@ async def handle_message(data):
             send_audio(telefono, media_id_sent)
             if len(respuesta) > 1073:
                 send_template(telefono,"crearpdf","es")
+                set_event("pdf","generar")
             set_event(media_id, "DONE")
     finally:
         release_user_lock(telefono)
