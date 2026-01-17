@@ -28,7 +28,7 @@ async def handle_message(data):
             if len(respuesta) > 1073:
                 send_template(telefono,"crearpdf","es")
         if msg["type"] == "button":
-            respuesta = msg["button"]["text"])
+            respuesta = msg["button"]["text"]
             if get_event("pdf") == "generar":
                 if respuesta.lower() in ["si","sí","s"]:
                     send_text(telefono, "generando pdf")
