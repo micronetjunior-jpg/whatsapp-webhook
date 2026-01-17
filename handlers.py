@@ -4,8 +4,17 @@ from services.ai import *
 from services.pdf import *
 from services.tts import *
 
+def extract_message(payload: dict) -> dict | None:
+    try:
+        return payload["entry"][0]["changes"][0]["value"]["messages"][0]
+    except (KeyError, IndexError, TypeError):
+        return None
+
 async def handle_message(data):
-    msg = data["entry"][0]["changes"][0]["value"]["messages"][0]
+    msg = extract_message(data)
+    if not msg:
+        return
+    
     telefono = msg["from"]
 
     if not acquire_user_lock(telefono):
