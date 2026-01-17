@@ -28,11 +28,7 @@ async def handle_message(data):
 
             set_event(media_id, "PROCESSING")
             audio = download_media(media_id)
-            
-            print("TYPE",type(audio))
-            
-            #transcripcion = transcribir_audio(audio)
-            texto =  "aquí)"
+            texto = transcribir_audio(audio)
             respuesta = ask_ai(telefono, texto)
             send_text(telefono, respuesta)
             set_event(media_id, "DONE")
