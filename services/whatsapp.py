@@ -69,6 +69,7 @@ def download_media(media_id):
     
 def send_template(to,name,lang):
     url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
+    headers = {"Authorization": f"Bearer {WHATSAPP_TOKEN}"}
     payload = {
         "messaging_product":"whatsapp",
         "to":to,
