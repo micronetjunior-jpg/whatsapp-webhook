@@ -62,12 +62,13 @@ async def handle_message(data):
                 return
             setBusy(telefono,True)
             set_event(media_id, "PROCESSING")
+            send_text
             audio = download_media(media_id)
             texto = transcribir_audio(audio)
             respuesta = ask_ai(telefono, texto)
-            audio_path = generar_audio_mp3(respuesta)
-            media_id_sent = subir_audio_ruta(audio_path)
-            send_audio(telefono, media_id_sent)
+            #audio_path = generar_audio_mp3(respuesta)
+            #media_id_sent = subir_audio_ruta(audio_path)
+            #enviar_audio(telefono, media_id_sent)
             if len(respuesta) > 1073:
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
