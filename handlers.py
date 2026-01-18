@@ -35,7 +35,9 @@ async def handle_message(data):
                 if respuesta.lower() in ["si","sí","s"]:
                     set_event("busy","YES")
                     send_text(telefono, "generando pdf")
-                    generar_pdf(get_event("respuesta"))
+                    buffer = generar_pdf(get_event("respuesta"))
+                    media_id = subir_pdf(buffer)
+                    enviar_pdf(telefono,media_id)
                     set_event("busy", "IDLE")
                     set_event("pdf","")
                     set_event("respuesta","")
