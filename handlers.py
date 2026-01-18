@@ -66,7 +66,7 @@ async def handle_message(data):
             audio = download_media(media_id)
             texto = transcribir_audio(audio)
             respuesta = ask_ai(telefono, texto)
-            #audio_path = generar_audio_mp3(respuesta)
+            audio_path = generar_audio_mp3(respuesta)
             #media_id_sent = subir_audio_ruta(audio_path)
             #enviar_audio(telefono, media_id_sent)
             if len(respuesta) > 1073:
