@@ -22,8 +22,7 @@ def ask_ai(telefono, texto):
         model=modeloTexto,
         messages=historial,
         max_tokens=1000
-    )
-
+        )
     respuesta = res.choices[0].message.content
     historial.append({"role": "assistant", "content": respuesta})
     guardar_historial(telefono, historial)
@@ -41,7 +40,7 @@ def transcribir_audio(audio_bytes: bytes) -> str:
         transcription = client.audio.transcriptions.create(
             file=open(f.name, "rb"),
             model=modeloTran 
-        )
+            )
 
     return transcription.text
     
@@ -57,14 +56,12 @@ def texro_a_audio(texto: str) -> str:
         model=modeloTexto,
         messages=historial,
         max_tokens=1000
-    )
+        )
 
     respuesta = res.choices[0].message.content
     historial.append({"role": "assistant", "content": respuesta})
     guardar_historial(telefono, historial)
     return respuesta
-
-    return transcription.text
     
 client = OpenAI(api_key=OPENAI_API_KEY)
 def realtime(texto: str) -> str:
@@ -78,11 +75,9 @@ def realtime(texto: str) -> str:
         model=modeloTexto,
         messages=historial,
         max_tokens=1000
-    )
+        )
 
     respuesta = res.choices[0].message.content
     historial.append({"role": "assistant", "content": respuesta})
     guardar_historial(telefono, historial)
     return respuesta
-
-    return transcription.text
