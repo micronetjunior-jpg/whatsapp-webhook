@@ -19,7 +19,7 @@ def ask_ai(telefono, texto):
     historial.append({"role": "user", "content": texto})
 
     res = openai.chat.completions.create(
-        model=modeloTexto,
+        model="gpt-5-nano",
         messages=historial,
         max_tokens=1000
         )
