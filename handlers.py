@@ -28,7 +28,10 @@ async def handle_message(data):
             respuesta = ask_ai(telefono, msg["text"]["body"])
             send_text(telefono, respuesta)
             if len(respuesta) > 1073:
+                set_event("pdf","generar")
+                set_event("respuesta",respuesta)
                 send_template(telefono,"crearpdf","es")
+                print(get_event("pdf"))
         if msg["type"] == "button":
             respuesta = msg["button"]["text"]
             print(respuesta)
@@ -60,7 +63,6 @@ async def handle_message(data):
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
                 send_template(telefono,"crearpdf","es")
-                
                 print(get_event("pdf"))
             set_event(media_id, "DONE")
     finally:
