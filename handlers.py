@@ -67,13 +67,13 @@ async def handle_message(data):
             texto = transcribir_audio(audio)
             respuesta = ask_ai(telefono, texto)
             audio_path = generar_audio_mp3(respuesta)
-            #media_id_sent = subir_audio_ruta(audio_path)
+            media_id_sent = subir_audio_ruta(audio_path)
             #enviar_audio(telefono, media_id_sent)
             if len(respuesta) > 1073:
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
                 send_template(telefono,"crearpdf","es")
-            set_event(media_id, "DONE")
+                set_event(media_id, "DONE")
             setBusy(telefono,False)
     finally:
         release_user_lock(telefono)
