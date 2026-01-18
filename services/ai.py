@@ -96,3 +96,14 @@ def audio_a_texto2(audio) -> str:
       }
     )
     return response
+    
+    #POST /v1/realtime/sessions
+def asistente():
+    response = client.responses.create(
+      prompt={
+        "id": "pmpt_696d646f2b008197b7ad734dfda68cfe033154a747e991c7",
+        "version": "1",
+        }
+    )
+    return response
+    
