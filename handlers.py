@@ -57,9 +57,9 @@ async def handle_message(data):
             media_id_sent = subir_audio_ruta(audio_path)
             send_audio(telefono, media_id_sent)
             if len(respuesta) > 1073:
-                send_template(telefono,"crearpdf","es")
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
+                send_template(telefono,"crearpdf","es")
             set_event(media_id, "DONE")
     finally:
         release_user_lock(telefono)
