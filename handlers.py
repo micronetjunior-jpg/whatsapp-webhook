@@ -48,7 +48,7 @@ async def handle_message(data):
                 if respuesta.lower() in ["si","sí","s"]:
                     setBusy(telefono,True)
                     send_text(telefono, "generando pdf")
-                    buffer = generar_pdf(get_event("respuesta"))
+                    buffer = generar_pdf(get_event("respuesta")["status"])
                     media_id = subir_pdf(buffer)
                     enviar_pdf(telefono,media_id)
                     set_event("pdf","")
