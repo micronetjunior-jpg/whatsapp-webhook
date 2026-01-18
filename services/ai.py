@@ -65,3 +65,24 @@ def texro_a_audio(texto: str) -> str:
     return respuesta
 
     return transcription.text
+    
+client = OpenAI(api_key=OPENAI_API_KEY)
+def realtime(texto: str) -> str:
+    historial = obtener_historial(telefono)
+    if not historial:
+        historial = [{"role": "system", "content": "Eres un asistente útil. Genera las respuestas sin pies de página, los encabezados, asteriscos o signos"}]
+
+    historial.append({"role": "user", "content": texto})
+
+    res = openai.chat.completions.create(
+        model=modeloTexto,
+        messages=historial,
+        max_tokens=1000
+    )
+
+    respuesta = res.choices[0].message.content
+    historial.append({"role": "assistant", "content": respuesta})
+    guardar_historial(telefono, historial)
+    return respuesta
+
+    return transcription.text
