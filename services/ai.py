@@ -66,7 +66,7 @@ def texto_a_audio(texto: str) -> str:
     
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-def audio_a_texto(texto: str) -> str:
+def audio_a_text(texto: str) -> str:
     historial = obtener_historial(telefono)
     if not historial:
         historial = [{"role": "system", "content": "Eres un asistente útil. Genera las respuestas sin pies de página, los encabezados, asteriscos o signos"}]
