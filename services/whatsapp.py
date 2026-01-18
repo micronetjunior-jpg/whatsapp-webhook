@@ -87,7 +87,27 @@ def subir_pdf(pdf_bytes: bytes) -> str:
         "type": (None, "application/pdf"),
         "messaging_product": (None, "whatsapp")
     }
-
     response = requests.post(url, headers=headers, files=files)
     response.raise_for_status()
     return response.json()["id"]
+    
+def enviar_pdf(to: str, media_id: str):
+    url = f"https://graph.facebook.com/v24.0/{PHONE_NUMBER_ID}/messages"
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": to,
+        "type": "document",
+        "document": {
+            "id": media_id,
+            "filename": "respuesta.pdf"
+        }
+    }
+    response = requests.post(url, headers=headers, json=payload)
+    response.raise_for_status()
+    
+
+
