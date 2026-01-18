@@ -87,13 +87,14 @@ def audio_a_text(texto: str) -> str:
 from openai import OpenAI
 client = OpenAI()
 
-def audio_a_texto(texto: str) -> str:
+def audio_a_texto(audio) -> str:
     response = client.responses.create(
       prompt={
         "id": "pmpt_696d570cef7881909619d46caa10731703d4e08da50bfc16",
         "version": "2",
         "variables": {
-          "consulta": "texto"
+          "consulta": audio
         }
       }
     )
+    return response
