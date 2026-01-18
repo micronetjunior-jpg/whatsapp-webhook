@@ -22,7 +22,7 @@ async def handle_message(data):
         return
 
     try:
-        if get_event("busy") == "YES":
+        if get_event("busy")["status"] == "YES":
             return
         if msg["type"] == "text":
             respuesta = ask_ai(telefono, msg["text"]["body"])
@@ -36,7 +36,7 @@ async def handle_message(data):
             respuesta = msg["button"]["text"]
             print(respuesta)
             print(get_event("pdf"))
-            if get_event("pdf") == "generar":
+            if get_event("pdf")["status"] == generar":
                 if respuesta.lower() in ["si","sí","s"]:
                     set_event("busy","YES")
                     send_text(telefono, "generando pdf")
