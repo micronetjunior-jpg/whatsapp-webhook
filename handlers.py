@@ -1,4 +1,4 @@
-from memory import *
+ from memory import *
 from services.whatsapp import *
 from services.ai import *
 from services.pdf import *
