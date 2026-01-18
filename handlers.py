@@ -4,6 +4,17 @@ from services.ai import *
 from services.pdf import *
 from services.tts import *
 
+def isBusy(to):
+    key = to+"busy"
+    if get_event(key) and get_event(key)["status"] == "busy":
+        return True
+    else:
+        return False
+        
+def setBusy(to,state):
+    key = to+"busy"
+    set_event(key,state)
+
 def extract_message(payload: dict) -> dict | None:
     try:
         return payload["entry"][0]["changes"][0]["value"]["messages"][0]
@@ -22,7 +33,7 @@ async def handle_message(data):
         return
 
     try:
-        if get_event("busy")["status"] == "YES":
+        if isBusy(telefono):
             return
         if msg["type"] == "text":
             respuesta = ask_ai(telefono, msg["text"]["body"])
@@ -31,27 +42,25 @@ async def handle_message(data):
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
                 send_template(telefono,"crearpdf","es")
-                print(get_event("pdf"))
         if msg["type"] == "button":
             respuesta = msg["button"]["text"]
-            print(respuesta)
-            print(get_event("pdf"))
             if get_event("pdf")["status"] == "generar":
                 if respuesta.lower() in ["si","sí","s"]:
-                    set_event("busy","YES")
+                    setBusy(telefono,True)
                     send_text(telefono, "generando pdf")
                     buffer = generar_pdf(get_event("respuesta"))
                     media_id = subir_pdf(buffer)
                     enviar_pdf(telefono,media_id)
-                    set_event("busy", "IDLE")
                     set_event("pdf","")
                     set_event("respuesta","")
+                    setBusy(telefono,False)
                 else:
                     set_event("respuesta","")
         elif msg["type"] == "audio":
             media_id = msg["audio"]["id"]
             if get_event(media_id):
                 return
+            setBusy(telefono,True)
             set_event(media_id, "PROCESSING")
             audio = download_media(media_id)
             texto = transcribir_audio(audio)
@@ -63,7 +72,7 @@ async def handle_message(data):
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
                 send_template(telefono,"crearpdf","es")
-                print(get_event("pdf"))
             set_event(media_id, "DONE")
+            setBusy(telefono,False)
     finally:
         release_user_lock(telefono)
