@@ -38,9 +38,9 @@ async def handle_message(data):
                     generar_pdf(get_event("respuesta"))
                     set_event("busy", "IDLE")
                     set_event("pdf","")
-                    set_event("respuesta",""]
+                    set_event("respuesta","")
                 else:
-                    set_event("respuesta",""]
+                    set_event("respuesta","")
         elif msg["type"] == "audio":
             media_id = msg["audio"]["id"]
             if get_event(media_id):
