@@ -36,7 +36,7 @@ async def handle_message(data):
             respuesta = msg["button"]["text"]
             print(respuesta)
             print(get_event("pdf"))
-            if get_event("pdf")["status"] == generar":
+            if get_event("pdf")["status"] == "generar":
                 if respuesta.lower() in ["si","sí","s"]:
                     set_event("busy","YES")
                     send_text(telefono, "generando pdf")
