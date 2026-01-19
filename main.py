@@ -2,6 +2,7 @@ import asyncio
 from fastapi import FastAPI, Request, Response
 from config import VERIFY_TOKEN
 from handlers import handle_message
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -18,3 +19,10 @@ async def webhook(request: Request):
     asyncio.create_task(handle_message(data))
     return Response(status_code=200)
     
+
+
+
+
+
+
+
