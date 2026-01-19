@@ -1,30 +1,38 @@
-# example requires websocket-client library:
-# pip install websocket-client
-
+from fastapi import FastAPI, Request
+import requests
 import os
-import json
-import websocket
 
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+app = FastAPI()
 
-url = "wss://api.openai.com/v1/realtime?model=gpt-realtime"
-headers = ["Authorization: Bearer " + OPENAI_API_KEY]
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_BASE = "https://api.openai.com/v1/realtime/calls"
 
+HEADERS = {
+    "Authorization": f"Bearer {OPENAI_API_KEY}",
+    "Content-Type": "application/json"
+}
 
-def on_open(ws):
-    print("Connected to server.")
+@app.post("/webhook/call")
+async def incoming_call(request: Request):
+    payload = await request.json()
+    print("📞 CALL EVENT:", payload)
 
+    call_id = payload.get("call_id")
 
-def on_message(ws, message):
-    data = json.loads(message)
-    print("Received event:", json.dumps(data, indent=2))
+    if not call_id:
+        return {"error": "No call_id received"}
 
+    # 1️⃣ Aceptar la llamada
+    accept = requests.post(
+        f"{OPENAI_BASE}/{call_id}/accept",
+        headers=HEADERS,
+        json={
+            "type": "realtime",
+            "model": "gpt-realtime-mini",
+            "voice": "alloy"
+        }
+    )
 
-ws = websocket.WebSocketApp(
-    url,
-    header=headers,
-    on_open=on_open,
-    on_message=on_message,
-)
+    print("✅ Call accepted:", accept.status_code)
 
-ws.run_forever()
+    return {"status": "accepted", "call_id": call_id}
