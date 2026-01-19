@@ -69,7 +69,7 @@ async def handle_message(data):
             if len(respuesta) > 1000000:
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
-                set_event(media_id, "DONE")
                 send_template(telefono,"crearpdf","es")
+                set_event(media_id, "DONE")
     finally:
         release_user_lock(telefono)
