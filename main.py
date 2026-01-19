@@ -8,9 +8,9 @@ from config import *
 app = FastAPI()
 
 MODEL = "gpt-realtime-mini"
-REALTIME_URL = f"wss://api.openai.com/v1/realtime?model={MODEL}"
-"""
-###
+REALTIME_URL = "wss://api.openai.com/v1/realtime?model="+MODEL 
+
+
 async def call_realtime(prompt: str) -> str:
     response_text = ""
     async with websockets.connect(
@@ -37,7 +37,7 @@ async def call_realtime(prompt: str) -> str:
         if event["type"] == "response.completed":
             break
         return response_text
-    
+'"""
 @app.post("/webhook")
     async def webhook(request: Request):
         data = await request.json()
