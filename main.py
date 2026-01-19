@@ -41,7 +41,7 @@ async def call_realtime(prompt: str) -> str:
     
 @app.post("/webhook")
     async def webhook(request: Request):
-    data = await request.json()
-    user_text = data.get("text", "Hola")
-    reply = await call_realtime(user_text)
+        data = await request.json()
+        user_text = data.get("text", "Hola")
+        reply = await call_realtime(user_text)
     return {"reply": reply}
