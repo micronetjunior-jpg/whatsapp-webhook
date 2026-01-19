@@ -25,8 +25,7 @@ async def audio_bridge(ws: WebSocket):
             "type": "session.update",
             "session": {
                 "instructions": (
-                    "Eres un asistente telefónico en español. "
-                    "Respondes de forma clara, breve y amable."
+                    "Eres un asistente telefónico en español. "+"Respondes de forma clara, breve y amable."
                 ),
                 "voice": "alloy",
                 "input_audio_format": "pcm16",
