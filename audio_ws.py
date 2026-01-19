@@ -1,54 +1,62 @@
-# audio.py
 import asyncio
 import json
+import os
 import websockets
-from fastapi import WebSocket
-from config import OPENAI_API_KEY
 
-async def audio_endpoint(ws: WebSocket):
-    await ws.accept()
-    print("🔗 WebSocket /audio conectado")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
+REALTIME_URL = (
+    "wss://api.openai.com/v1/realtime"
+    "?model=gpt-realtime-mini"
+)
+
+HEADERS = {
+    "Authorization": f"Bearer {OPENAI_API_KEY}",
+    "OpenAI-Beta": "realtime=v1"
+}
+
+async def realtime_agent():
     async with websockets.connect(
-        "wss://api.openai.com/v1/realtime?model=gpt-realtime-mini",
-        extra_headers={
-            "Authorization": f"Bearer {OPENAI_API_KEY}",
-            "OpenAI-Beta": "realtime=v1"
-        }
-    ) as openai_ws:
+        REALTIME_URL,
+        extra_headers=HEADERS
+    ) as ws:
 
-        # Configuración inicial del asistente
-        await openai_ws.send(json.dumps({
-            "type": "session.update",
+        # 1️⃣ Crear una sesión
+        await ws.send(json.dumps({
+            "type": "session.create",
             "session": {
+                "modalities": ["text"],
                 "instructions": (
-                    "Eres un asistente telefónico en español, "
-                    "claro, breve y amable."
-                ),
-                "voice": "alloy",
-                "input_audio_format": "pcm16",
-                "output_audio_format": "pcm16"
+                    "Eres un asistente experto en sistemas inteligentes "
+                    "y agentes automatizados."
+                )
             }
         }))
 
-        async def meta_to_openai():
-            while True:
-                data = await ws.receive_bytes()
-                await openai_ws.send(json.dumps({
-                    "type": "input_audio_buffer.append",
-                    "audio": data.hex()
-                }))
+        # 2️⃣ Enviar un mensaje del usuario
+        await ws.send(json.dumps({
+            "type": "input_text_buffer.append",
+            "text": "Explícame qué es un agente inteligente"
+        }))
 
-        async def openai_to_meta():
-            while True:
-                msg = await openai_ws.recv()
-                event = json.loads(msg)
+        await ws.send(json.dumps({
+            "type": "input_text_buffer.commit"
+        }))
 
-                if event["type"] == "output_audio_buffer.append":
-                    audio = bytes.fromhex(event["audio"])
-                    await ws.send_bytes(audio)
+        await ws.send(json.dumps({
+            "type": "response.create"
+        }))
 
-        await asyncio.gather(
-            meta_to_openai(),
-            openai_to_meta()
-        )
+        # 3️⃣ Escuchar respuestas
+        while True:
+            message = await ws.recv()
+            event = json.loads(message)
+
+            if event["type"] == "response.output_text.delta":
+                print(event["delta"], end="", flush=True)
+
+            if event["type"] == "response.completed":
+                print("\n\n✔ Respuesta completada")
+                break
+
+asyncio.run(realtime_agent())
