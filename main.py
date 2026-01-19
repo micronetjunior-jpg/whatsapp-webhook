@@ -19,7 +19,21 @@ async def webhook(request: Request):
     asyncio.create_task(handle_message(data))
     return Response(status_code=200)
 
+@app.post("/webhook")
+async def meta_webhook(request: Request):
+    payload = await request.json()
+    print("📞 EVENTO META:", payload)
 
-
-
+    # Detectar evento de llamada
+    if payload.get("event") == "call":
+        return JSONResponse({
+            "action": "connect",
+            "stream": {
+                
+                # WebSocket donde Meta enviará el audio
+                "url": "wss://TU-SERVICIO.railway.app/audio"
+            }
+        })
+    print("llamada")
+    return JSONResponse({"status": "ok"})
 
