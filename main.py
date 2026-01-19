@@ -9,7 +9,8 @@ app = FastAPI()
 
 MODEL = "gpt-realtime-mini"
 REALTIME_URL = f"wss://api.openai.com/v1/realtime?model={MODEL}"
-
+"""
+###
 async def call_realtime(prompt: str) -> str:
     response_text = ""
     async with websockets.connect(
@@ -43,3 +44,5 @@ async def call_realtime(prompt: str) -> str:
         user_text = data.get("text", "Hola")
         reply = await call_realtime(user_text)
     return {"reply": reply}
+###
+"""
