@@ -18,9 +18,6 @@ async def webhook(request: Request):
     data = await request.json()
     asyncio.create_task(handle_message(data))
     return Response(status_code=200)
-    
-
-
 
 
 
