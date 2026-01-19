@@ -3,11 +3,10 @@ import asyncio
 import json
 import os
 import websockets
+from config import *
 
 app = FastAPI()
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-HEADERS = {"Authorization": f"Bearer {OPENAI_API_KEY}","OpenAI-Beta": "realtime=v1"}
 MODEL = "gpt-realtime-mini"
 REALTIME_URL = f"wss://api.openai.com/v1/realtime?model={MODEL}"
 
