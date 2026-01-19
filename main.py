@@ -8,12 +8,9 @@ app = FastAPI()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-REALTIME_URL = ("wss://api.openai.com/v1/realtime"?model=gpt-realtime-mini")
+REALTIME_URL = "wss://api.openai.com/v1/realtime"?model=gpt-realtime-mini"
 
-HEADERS = {
-    "Authorization": f"Bearer {OPENAI_API_KEY}",
-    "OpenAI-Beta": "realtime=v1"
-}
+HEADERS = {"Authorization": f"Bearer {OPENAI_API_KEY}","OpenAI-Beta": "realtime=v1"}
 
 async def call_realtime(prompt: str) -> str:
     response_text = ""
