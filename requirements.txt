@@ -8,5 +8,5 @@ redis
 python-pptx
 cloudconvert
 websockets
-websocket-client
+websocket-12
 asyncio
