@@ -1,16 +1,15 @@
+# audio.py
+import asyncio
 import json
 import websockets
-from fastapi import FastAPI, WebSocket
-from config import OPENAI_API_KEY
+from fastapi import WebSocket
 
-appWS = FastAPI()
+OPENAI_API_KEY = "TU_OPENAI_KEY"
 
-@appWS.websocket("/audio")
-async def audio_bridge(ws: WebSocket):
+async def audio_endpoint(ws: WebSocket):
     await ws.accept()
-    print("🔗 Meta conectado al audio WS")
+    print("🔗 WebSocket /audio conectado")
 
-    # Conexión a OpenAI Realtime
     async with websockets.connect(
         "wss://api.openai.com/v1/realtime?model=gpt-realtime-mini",
         extra_headers={
@@ -19,12 +18,13 @@ async def audio_bridge(ws: WebSocket):
         }
     ) as openai_ws:
 
-        # Configurar sesión
+        # Configuración inicial del asistente
         await openai_ws.send(json.dumps({
             "type": "session.update",
             "session": {
                 "instructions": (
-                    "Eres un asistente telefónico en español. "+"Respondes de forma clara, breve y amable."
+                    "Eres un asistente telefónico en español, "
+                    "claro, breve y amable."
                 ),
                 "voice": "alloy",
                 "input_audio_format": "pcm16",
@@ -36,7 +36,7 @@ async def audio_bridge(ws: WebSocket):
             while True:
                 data = await ws.receive_bytes()
                 await openai_ws.send(json.dumps({
-                    "type": "input_audio_buffer.appWSend",
+                    "type": "input_audio_buffer.append",
                     "audio": data.hex()
                 }))
 
