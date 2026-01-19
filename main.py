@@ -12,9 +12,7 @@ async def audio_endpoint(ws: WebSocket):
     print("🔗 WebSocket /audio conectado")
     async with websockets.connect(
         "wss://api.openai.com/v1/realtime?model=gpt-realtime-mini",
-        extra_headers={
-            "Authorization": f"Bearer {OPENAI_API_KEY}",
-            "OpenAI-Beta": "realtime=v1"}) 
+        extra_headers={"Authorization": f"Bearer {OPENAI_API_KEY}","OpenAI-Beta": "realtime=v1"}) 
         
     
 """
@@ -26,3 +24,11 @@ async def webhook(request: Request):
         reply = await call_realtime(user_text)
     return {"reply": reply}
 
+
+
+{
+  "prompt": {
+    "id": "pmpt_696e7b7e25a88194910e42e88b46796f09b017994935008f",
+    "version": "1"
+  }
+}
