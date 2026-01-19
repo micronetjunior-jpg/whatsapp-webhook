@@ -27,7 +27,7 @@ def text_to_speech(texto):
     response = requests.post(
         f"{KOKOROURL}/v1/audio/speech",
         json=payload,
-        timeout=60
+        timeout=180
     )
     response.raise_for_status()
     return response.content
