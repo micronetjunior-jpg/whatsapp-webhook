@@ -3,8 +3,7 @@ import asyncio
 import json
 import websockets
 from fastapi import WebSocket
-
-OPENAI_API_KEY = "TU_OPENAI_KEY"
+from config import OPENAI_API_KEY
 
 async def audio_endpoint(ws: WebSocket):
     await ws.accept()
