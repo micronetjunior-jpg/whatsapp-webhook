@@ -3,9 +3,9 @@ import websockets
 from fastapi import FastAPI, WebSocket
 from config import OPENAI_API_KEY
 
-app = FastAPI()
+appWS = FastAPI()
 
-@app.websocket("/audio")
+@appWS.websocket("/audio")
 async def audio_bridge(ws: WebSocket):
     await ws.accept()
     print("🔗 Meta conectado al audio WS")
@@ -36,7 +36,7 @@ async def audio_bridge(ws: WebSocket):
             while True:
                 data = await ws.receive_bytes()
                 await openai_ws.send(json.dumps({
-                    "type": "input_audio_buffer.append",
+                    "type": "input_audio_buffer.appWSend",
                     "audio": data.hex()
                 }))
 
