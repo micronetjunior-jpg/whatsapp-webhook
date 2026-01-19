@@ -4,6 +4,19 @@ from config import VERIFY_TOKEN
 from handlers import handle_message
 from fastapi.responses import JSONResponse
 from audio_ws import *
+import websockets
+import asyncio
+
+async def test():
+    async with websockets.connect(
+        "wss://webhook-server-ambientepruebayy.up.railway.app/audio"
+    ) as ws:
+        print()
+        print()
+        print()
+        print("Conectado al WS")
+        await asyncio.sleep(10)
+asyncio.run(test())
 
 app = FastAPI()
 
