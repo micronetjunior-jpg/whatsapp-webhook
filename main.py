@@ -23,29 +23,22 @@ async def call_realtime(prompt: str) -> str:
 
     async with websockets.connect(
         REALTIME_URL,
-        extra_headers=HEADERS
-    ) as ws:
+        extra_headers=HEADERS)
+    as ws:
 
-        await ws.send(json.dumps({
-            "type": "session.create",
-            "session": {
-                "modalities": ["text"],
-                "instructions": "Eres un asistente experto en agentes inteligentes."
-            }
-        }))
-
+    await ws.send(json.dumps({
+        "type": "session.create",
+        "session": {
+            "modalities": ["text"],
+            "instructions": "Eres un asistente experto en agentes inteligentes."} }))
         await ws.send(json.dumps({
             "type": "input_text_buffer.append",
-            "text": prompt
-        }))
+            "text": prompt }))
+        await ws.send(json.dumps({
+            "type": "input_text_buffer.commit"}))
 
         await ws.send(json.dumps({
-            "type": "input_text_buffer.commit"
-        }))
-
-        await ws.send(json.dumps({
-            "type": "response.create"
-        }))
+            "type": "response.create" }))
 
         while True:
             event = json.loads(await ws.recv())
@@ -63,7 +56,5 @@ async def call_realtime(prompt: str) -> str:
 async def webhook(request: Request):
     data = await request.json()
     user_text = data.get("text", "Hola")
-
     reply = await call_realtime(user_text)
-
     return {"reply": reply}
