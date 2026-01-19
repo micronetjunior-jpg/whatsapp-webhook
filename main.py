@@ -15,6 +15,7 @@ async def meta_webhook(request: Request):
     print("📞 EVENTO META:", payload)
 
     if payload.get("event") == "call":
+        print("vamos alla")
         return JSONResponse({
             "action": "connect",
             "stream": {
