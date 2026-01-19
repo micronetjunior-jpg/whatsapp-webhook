@@ -70,6 +70,6 @@ async def handle_message(data):
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
                 set_event(media_id, "DONE")
-                #send_template(telefono,"crearpdf","es")
+                send_template(telefono,"crearpdf","es")
     finally:
         release_user_lock(telefono)
