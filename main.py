@@ -18,7 +18,7 @@ async def meta_webhook(request: Request):
         return JSONResponse({
             "action": "connect",
             "stream": {
-                "url": "wss://webhook-server-ambientepruebayy.up.railway.app/audio"
+                "url": "wss://webhook-server-ambienteprueba.up.railway.app/audio"
             }
         })
 
