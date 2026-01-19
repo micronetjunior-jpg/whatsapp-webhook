@@ -24,9 +24,8 @@ async def meta_webhook(request: Request):
         return JSONResponse({
             "action": "connect",
             "stream": {
-                
                 # WebSocket donde Meta enviará el audio
-                "url": "wss://TU-SERVICIO.railway.app/audio"
+                "url": "wss://webhook-server-ambienteprueba.up.railway.app/audio
             }
         })
         print("llamada")
