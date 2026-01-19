@@ -16,6 +16,7 @@ async def test():
         print()
         print("Conectado al WS")
         await asyncio.sleep(10)
+        
 asyncio.run(test())
 
 app = FastAPI()
