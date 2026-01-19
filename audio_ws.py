@@ -1,8 +1,7 @@
 import json
 import websockets
 from fastapi import FastAPI, WebSocket
-
-OPENAI_API_KEY = 
+from config import OPENAI_API_KEY
 
 app = FastAPI()
 
