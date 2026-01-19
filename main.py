@@ -14,13 +14,8 @@ async def verify(request: Request):
     if p.get("hub.verify_token") == VERIFY_TOKEN:
         return Response(content=p.get("hub.challenge"))
     return Response(status_code=403)
-    else:
-        data = await request.json()
-        asyncio.create_task(handle_message(data))
-        return Response(status_code=200)
-
-
-
+    
+    
 async def test():
     async with websockets.connect(
         "wss://webhook-server-ambientepruebayy.up.railway.app/audio"
