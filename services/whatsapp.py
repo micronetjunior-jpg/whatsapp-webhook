@@ -26,7 +26,7 @@ def upload_media(file_bytes, mime, filename):
     r.raise_for_status()
     return r.json()["id"]
 
-def send_audio(to, media_id):
+def enviar_audio(to, media_id):
     requests.post(
         f"{BASE_URL}/messages",
         headers={"Authorization": f"Bearer {WHATSAPP_TOKEN}"},
