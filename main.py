@@ -24,6 +24,7 @@ async def call_realtime(prompt: str) -> str:
     async with websockets.connect(
         REALTIME_URL,
         extra_headers=HEADERS)
+    
     as ws:
 
     await ws.send(json.dumps({
@@ -36,7 +37,6 @@ async def call_realtime(prompt: str) -> str:
             "text": prompt }))
         await ws.send(json.dumps({
             "type": "input_text_buffer.commit"}))
-
         await ws.send(json.dumps({
             "type": "response.create" }))
 
