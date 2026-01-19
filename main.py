@@ -8,19 +8,24 @@ import asyncio
 
 app = FastAPI()
 
-@app.get("/webhook")
-async def verify(request: Request):
-    p = request.query_params
-    if p.get("hub.verify_token") == VERIFY_TOKEN:
-        return Response(content=p.get("hub.challenge"))
-    return Response(status_code=403)
-    
-    
-async def test():
-    async with websockets.connect(
-        "wss://webhook-server-ambientepruebayy.up.railway.app/audio"
-    ) as ws:
-        print("Conectado al WS")
-        await asyncio.sleep(10)
+# Webhook Meta
+@app.post("/webhook")
+async def meta_webhook(request: Request):
+    payload = await request.json()
+    print("📞 EVENTO META:", payload)
 
-asyncio.run(test())
+    if payload.get("event") == "call":
+        return JSONResponse({
+            "action": "connect",
+            "stream": {
+                "url": "wss://webhook-server-ambientepruebayy.up.railway.app/audio"
+            }
+        })
+
+    return JSONResponse({"status": "ok"})
+
+
+# WebSocket de audio
+@app.websocket("/audio")
+async def audio_ws(ws: WebSocket):
+    await audio_endpoint(ws)
