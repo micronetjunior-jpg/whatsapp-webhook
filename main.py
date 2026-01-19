@@ -1,34 +1,56 @@
-from fastapi import FastAPI, Request, Response
-from config import VERIFY_TOKEN
-from handlers import handle_message
-from fastapi.responses import JSONResponse
-from audio_ws import *
-import websockets
-import asyncio
+from fastapi import FastAPI, Request
+from fastapi.responses import PlainTextResponse
+import ast
+import logging
 
 app = FastAPI()
 
-# Webhook Meta
+logging.basicConfig(level=logging.INFO)
+
+VERIFY_TOKEN = "academia_verify_token"
+
+
+# 1️⃣ Verificación de Meta (OBLIGATORIO)
+@app.get("/webhook")
+async def verify_webhook(
+    hub_mode: str = None,
+    hub_challenge: str = None,
+    hub_verify_token: str = None,
+):
+    if hub_mode == "subscribe" and hub_verify_token == VERIFY_TOKEN:
+        logging.info("✅ Webhook verificado correctamente")
+        return PlainTextResponse(hub_challenge)
+    logging.warning("❌ Verificación fallida")
+    return PlainTextResponse("Error", status_code=403)
+
+
+# 2️⃣ Recepción de eventos (calls)
 @app.post("/webhook")
-async def meta_webhook(request: Request):
+async def receive_webhook(request: Request):
     payload = await request.json()
-    print("📞 EVENTO META:", payload)
-    temp = payload.get("entry")[0]["changes"][0]["metadata"]
-    print(temp)
-    print()
-    if payload.get("event") == "call":
-        print("vamos alla")
-        return JSONResponse({
-            "action": "connect",
-            "stream": {
-                "url": "wss://webhook-server-ambienteprueba.up.railway.app/audio"
-            }
-        })
+    logging.info(f"📩 Payload recibido: {payload}")
 
-    return JSONResponse({"status": "ok"})
+    # Meta a veces manda logs con message como string
+    if "message" in payload:
+        try:
+            entries = ast.literal_eval(payload["message"])
+            entry = entries[0]
 
+            value = entry["changes"][0]["value"]
 
-# WebSocket de audio
-@app.websocket("/audio")
-async def audio_ws(ws: WebSocket):
-    await audio_endpoint(ws)
+            if "calls" in value:
+                call = value["calls"][0]
+
+                logging.info("📞 LLAMADA DETECTADA")
+                logging.info(f"Call ID: {call['id']}")
+                logging.info(f"From: {call['from']}")
+                logging.info(f"Status: {call['status']}")
+                logging.info(f"Event: {call['event']}")
+
+                # 👉 AQUÍ luego entra OpenAI Realtime
+                # start_realtime_session(call["id"])
+
+        except Exception as e:
+            logging.error(f"Error procesando message: {e}")
+
+    return {"status": "ok"}
