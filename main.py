@@ -13,7 +13,9 @@ app = FastAPI()
 async def meta_webhook(request: Request):
     payload = await request.json()
     print("📞 EVENTO META:", payload)
-
+    temp = payload.get("entry"
+    print(temp)
+    print()
     if payload.get("event") == "call":
         print("vamos alla")
         return JSONResponse({
