@@ -13,7 +13,7 @@ app = FastAPI()
 async def meta_webhook(request: Request):
     payload = await request.json()
     print("📞 EVENTO META:", payload)
-    temp = payload.get("entry")[0]["changes"]
+    temp = payload.get("entry")[0]["changes"][0]["metadata"]
     print(temp)
     print()
     if payload.get("event") == "call":
