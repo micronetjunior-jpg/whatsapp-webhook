@@ -1,34 +1,30 @@
-from fastapi import FastAPI, Request
-import asyncio
-import json
+# example requires websocket-client library:
+# pip install websocket-client
+
 import os
-import websockets
-from config import *
+import json
+import websocket
 
-app = FastAPI()
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
-async def audio_endpoint(ws: WebSocket):
-    await ws.accept()
-    print("🔗 WebSocket /audio conectado")
-    async with websockets.connect(
-        "wss://api.openai.com/v1/realtime?model=gpt-realtime-mini",
-        extra_headers={"Authorization": f"Bearer {OPENAI_API_KEY}","OpenAI-Beta": "realtime=v1"}) 
-        
-    
-"""
-@app.post("/webhook")
-async def webhook(request: Request):
-    data = await request.json()
-    try:
-        #user_text = data.get("text", "Hola")
-        reply = await call_realtime(user_text)
-    return {"reply": reply}
+url = "wss://api.openai.com/v1/realtime?model=gpt-realtime"
+headers = ["Authorization: Bearer " + OPENAI_API_KEY]
 
 
+def on_open(ws):
+    print("Connected to server.")
 
-{
-  "prompt": {
-    "id": "pmpt_696e7b7e25a88194910e42e88b46796f09b017994935008f",
-    "version": "1"
-  }
-}
+
+def on_message(ws, message):
+    data = json.loads(message)
+    print("Received event:", json.dumps(data, indent=2))
+
+
+ws = websocket.WebSocketApp(
+    url,
+    header=headers,
+    on_open=on_open,
+    on_message=on_message,
+)
+
+ws.run_forever()
