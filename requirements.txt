@@ -9,4 +9,5 @@ python-pptx
 cloudconvert
 websockets
 asyncio
-websockets==12.0
+websockets
+websockets-client
