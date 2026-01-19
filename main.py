@@ -48,7 +48,7 @@ async def receive_webhook(request: Request):
                 logging.info(f"Event: {call['event']}")
 
                 # 👉 AQUÍ luego entra OpenAI Realtime
-                # start_realtime_session(call["id"])
+                start_realtime_session(call["id"])
 
         except Exception as e:
             logging.error(f"Error procesando message: {e}")
