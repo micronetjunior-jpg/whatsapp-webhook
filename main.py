@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, Response
 from config import VERIFY_TOKEN
 from handlers import handle_message
 from fastapi.responses import JSONResponse
-from audio_ws import *
+#from audio_ws import *
 import websockets
 
 async def test():
