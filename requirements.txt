@@ -10,4 +10,4 @@ cloudconvert
 websockets
 asyncio
 websockets
-websockets-client
+websocket-client
