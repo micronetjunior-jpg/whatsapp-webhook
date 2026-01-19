@@ -12,11 +12,20 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
+@app.post("/webhook/hangup/{call_id}")
+def hangup(call_id: str):
+    requests.post(
+        f"{OPENAI_BASE}/{call_id}/hangup",
+        headers=HEADERS
+    )
+    return {"status": "call terminated"}
+
+"""
 @app.post("/webhook/call")
 async def incoming_call(request: Request):
     payload = await request.json()
     print("📞 CALL EVENT:", payload)
-
+"""
 
     call_id = payload.get("call_id")
 
