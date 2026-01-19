@@ -60,7 +60,6 @@ async def handle_message(data):
             media_id = msg["audio"]["id"]
             if get_event(media_id):
                 return
-            setBusy(telefono,True)
             set_event(media_id, "PROCESSING")
             send_text
             audio = download_media(media_id)
@@ -69,11 +68,11 @@ async def handle_message(data):
             audio_path = generar_audio_mp3(respuesta)
             media_id_sent = subir_audio_ruta(audio_path)
             enviar_audio(telefono, media_id_sent)
+            set_event(media_id, "DONE")
             if len(respuesta) > 1000000:
                 set_event("pdf","generar")
                 set_event("respuesta",respuesta)
                 set_event(media_id, "DONE")
                 send_template(telefono,"crearpdf","es")
-                setBusy(telefono,False)
     finally:
         release_user_lock(telefono)
