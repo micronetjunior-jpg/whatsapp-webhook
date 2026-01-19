@@ -1,4 +1,4 @@
- from memory import *
+from memory import *
 from services.whatsapp import *
 from services.ai import *
 from services.pdf import *
@@ -74,6 +74,7 @@ async def handle_message(data):
                 set_event("respuesta",respuesta)
                 send_template(telefono,"crearpdf","es")
                 set_event(media_id, "DONE")
+                
                 setBusy(telefono,False)
     finally:
         release_user_lock(telefono)
