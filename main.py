@@ -31,7 +31,7 @@ async def incoming_call(request: Request):
             "type": "realtime",
             "model": "gpt-realtime-mini",
             "voice": "alloy",
-            instructions": "Hola, gracias por llamar. Soy tu asistente virtual. ¿En qué puedo ayudarte?"
+            "instructions": "Hola, gracias por llamar. Soy tu asistente virtual. ¿En qué puedo ayudarte?"
         }
     )
 
