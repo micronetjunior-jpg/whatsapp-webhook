@@ -17,6 +17,7 @@ async def incoming_call(request: Request):
     payload = await request.json()
     print("📞 CALL EVENT:", payload)
 
+
     call_id = payload.get("call_id")
 
     if not call_id:
@@ -29,7 +30,8 @@ async def incoming_call(request: Request):
         json={
             "type": "realtime",
             "model": "gpt-realtime-mini",
-            "voice": "alloy"
+            "voice": "alloy",
+            instructions": "Hola, gracias por llamar. Soy tu asistente virtual. ¿En qué puedo ayudarte?"
         }
     )
 
