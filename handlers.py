@@ -33,8 +33,6 @@ async def handle_message(data):
         return
 
     try:
-        if isBusy(telefono):
-            return
         if msg["type"] == "text":
             respuesta = ask_ai(telefono, msg["text"]["body"])
             send_text(telefono, respuesta)
@@ -61,7 +59,6 @@ async def handle_message(data):
             if get_event(media_id):
                 return
             set_event(media_id, "PROCESSING")
-            send_text
             audio = download_media(media_id)
             texto = transcribir_audio(audio)
             respuesta = ask_ai(telefono, texto)
