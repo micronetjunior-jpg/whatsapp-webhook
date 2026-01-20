@@ -11,7 +11,7 @@ HEADERS = {
     "Authorization": f"Bearer {OPENAI_API_KEY}",
     "Content-Type": "application/json"
 }
-
+"""
 @app.post("/webhook/hangup/{call_id}")
 def hangup(call_id: str):
     requests.post(
@@ -20,12 +20,12 @@ def hangup(call_id: str):
     )
     return {"status": "call terminated"}
 
-"""
+""""
 @app.post("/webhook/call")
 async def incoming_call(request: Request):
     payload = await request.json()
     print("📞 CALL EVENT:", payload)
-"""
+
 
     call_id = payload.get("call_id")
 
