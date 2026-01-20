@@ -22,7 +22,7 @@ def hangup(call_id: str):
 
 """"
 @app.post("/webhook/call")
-async def incoming_call(request: Request):
+ def incoming_call(request: Request):
     payload = await request.json()
     print("📞 CALL EVENT:", payload)
 
