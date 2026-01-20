@@ -20,7 +20,7 @@ def hangup(call_id: str):
     )
     return {"status": "call terminated"}
 
-""""
+"""
 @app.post("/webhook/call")
 def incoming_call(request: Request):
     payload = await request.json()
