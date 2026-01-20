@@ -8,7 +8,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_BASE = "https://api.openai.com/v1/realtime/calls"
 
 HEADERS = {
-    " Authorization": f"Bearer {OPENAI_API_KEY}",
+    "Authorization": f"Bearer {OPENAI_API_KEY}",
     "Content-Type": "application/json"}
 """
 @app.post("/webhook/hangup/{call_id}")
